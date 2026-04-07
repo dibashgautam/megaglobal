@@ -1,0 +1,666 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ category.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+/* ================= CATEGORY DETAIL PAGE START ================= */
+.category-detail-page{
+    background:
+        radial-gradient(circle at top left, rgba(13,110,253,.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,99,132,.10), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(25,135,84,.08), transparent 26%),
+        linear-gradient(180deg,#f6f9ff 0%,#eef4ff 50%,#f8fbff 100%);
+    position:relative;
+    overflow:hidden;
+}
+
+.category-detail-page .container{
+    position:relative;
+    z-index:2;
+}
+
+/* ================= HERO SECTION ================= */
+.category-hero{
+    position:relative;
+    border-radius:32px;
+    overflow:hidden;
+    margin-bottom:45px;
+    box-shadow:0 20px 60px rgba(16,24,40,.14);
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0b5ed7 100%);
+}
+
+.category-hero-inner{
+    display:flex;
+    align-items:stretch;
+    min-height:480px;
+    position:relative;
+}
+
+.category-hero-media{
+    position:relative;
+    flex:1 1 52%;
+    min-height:480px;
+    background:linear-gradient(135deg,#e8f1ff,#f8fbff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    overflow:hidden;
+}
+
+.category-hero-media::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(1px);
+}
+
+.category-hero-media img{
+    position:relative;
+    z-index:2;
+    width:100%;
+    height:100%;
+    object-fit:contain; /* पूरा hero image देखाउन */
+    display:block;
+    border-radius:24px;
+    background:#fff;
+    padding:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,.10);
+}
+
+.category-hero-content{
+    flex:1 1 48%;
+    padding:42px 38px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    z-index:2;
+}
+
+.category-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    width:max-content;
+    padding:9px 16px;
+    border-radius:999px;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.18);
+    color:#fff;
+    font-size:.88rem;
+    font-weight:700;
+    margin-bottom:18px;
+    backdrop-filter:blur(8px);
+    letter-spacing:.3px;
+}
+
+.category-hero-content h1{
+    font-size:clamp(2rem, 4vw, 3.2rem);
+    line-height:1.15;
+    font-weight:800;
+    color:#fff;
+    margin-bottom:16px;
+    text-shadow:0 4px 20px rgba(0,0,0,.18);
+}
+
+.category-hero-content .hero-subtitle{
+    font-size:1rem;
+    line-height:1.9;
+    color:rgba(255,255,255,.92);
+    margin-bottom:22px;
+}
+
+.category-description-box{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:22px;
+    padding:20px 20px 18px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 12px 30px rgba(0,0,0,.10);
+}
+
+.category-description-box p{
+    margin:0;
+    color:#fff;
+    font-size:.98rem;
+    line-height:1.9;
+}
+
+.category-toggle-wrap{
+    margin-top:15px;
+}
+
+.category-toggle-btn{
+    border:none;
+    outline:none;
+    border-radius:999px;
+    padding:10px 18px;
+    background:linear-gradient(135deg,#ffffff,#eaf2ff);
+    color:#0f172a;
+    font-size:.9rem;
+    font-weight:700;
+    transition:.3s ease;
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+.category-toggle-btn:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg,#0d6efd,#6610f2);
+    color:#fff;
+}
+
+.category-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:22px;
+}
+
+.category-meta-box{
+    min-width:150px;
+    padding:16px 18px;
+    border-radius:18px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+}
+
+.category-meta-box span{
+    display:block;
+}
+
+.category-meta-label{
+    color:rgba(255,255,255,.75);
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+}
+
+.category-meta-value{
+    color:#fff;
+    font-size:1.05rem;
+    font-weight:800;
+}
+
+/* ================= PRODUCT SECTION ================= */
+.product-section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.product-section-head h2{
+    margin:0;
+    font-size:clamp(1.5rem,2.6vw,2.2rem);
+    color:#0f172a;
+    font-weight:800;
+}
+
+.product-section-head p{
+    margin:8px 0 0;
+    color:#64748b;
+    font-size:.98rem;
+    line-height:1.7;
+}
+
+/* ================= PRODUCT CARD ================= */
+.product-card{
+    border:none;
+    border-radius:26px;
+    overflow:hidden;
+    background:linear-gradient(180deg,#ffffff 0%,#f9fbff 100%);
+    box-shadow:0 12px 35px rgba(15,23,42,.08);
+    transition:.35s ease;
+    height:100%;
+    position:relative;
+}
+
+.product-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:linear-gradient(90deg,#0d6efd,#20c997,#ff6b6b,#6f42c1);
+}
+
+.product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 22px 50px rgba(15,23,42,.14);
+}
+
+.product-image-wrap{
+    width:100%;
+    min-height:300px;
+    background:
+        radial-gradient(circle at top left, rgba(13,110,253,.10), transparent 25%),
+        linear-gradient(180deg,#ffffff 0%,#f4f8ff 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    overflow:hidden;
+    border-bottom:1px solid #edf2f7;
+}
+
+.product-image-wrap img{
+    width:100%;
+    height:252px;
+    object-fit:contain;
+    transition:.35s ease;
+}
+
+.product-card:hover .product-image-wrap img{
+    transform:scale(1.06);
+}
+
+.product-card-body{
+    padding:22px 20px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.product-title{
+    margin:0;
+    min-height:56px;
+    line-height:1.55;
+}
+
+.product-title a{
+    text-decoration:none;
+    color:#0f172a;
+    font-size:1.05rem;
+    font-weight:800;
+    transition:.25s ease;
+}
+
+.product-title a:hover{
+    color:#0d6efd;
+}
+
+.product-short-line{
+    color:#64748b;
+    font-size:.92rem;
+    line-height:1.7;
+    margin:0;
+}
+
+.product-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:4px;
+}
+
+.product-price{
+    font-size:1.15rem;
+    font-weight:800;
+    color:#dc2626;
+    margin:0;
+}
+
+.stock-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 13px;
+    border-radius:999px;
+    background:linear-gradient(135deg,#e8fff3,#d1fae5);
+    color:#0f9d58;
+    font-size:.8rem;
+    font-weight:700;
+    border:1px solid #bbf7d0;
+}
+
+.view-details-btn{
+    margin-top:6px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-decoration:none;
+    border:none;
+    border-radius:16px;
+    padding:13px 16px;
+    background:linear-gradient(135deg,#0d6efd 0%,#6f42c1 100%);
+    color:#fff !important;
+    font-size:.95rem;
+    font-weight:700;
+    box-shadow:0 12px 24px rgba(13,110,253,.20);
+    transition:.3s ease;
+}
+
+.view-details-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 30px rgba(13,110,253,.28);
+    color:#fff !important;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-products{
+    background:#fff;
+    border-radius:24px;
+    padding:45px 20px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+}
+
+.empty-products h5{
+    color:#0f172a;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.empty-products p{
+    color:#64748b;
+    margin:0;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:1199.98px){
+    .category-hero-inner{
+        min-height:440px;
+    }
+    .category-hero-media{
+        min-height:440px;
+    }
+    .product-image-wrap{
+        min-height:280px;
+    }
+    .product-image-wrap img{
+        height:230px;
+    }
+}
+
+@media (max-width:991.98px){
+    .category-hero-inner{
+        flex-direction:column;
+    }
+
+    .category-hero-media{
+        min-height:360px;
+        padding:20px;
+    }
+
+    .category-hero-content{
+        padding:30px 24px;
+    }
+
+    .product-image-wrap{
+        min-height:260px;
+    }
+
+    .product-image-wrap img{
+        height:220px;
+    }
+}
+
+@media (max-width:767.98px){
+    .category-detail-page{
+        padding-top:8px;
+    }
+
+    .category-hero{
+        border-radius:24px;
+        margin-bottom:32px;
+    }
+
+    .category-hero-media{
+        min-height:290px;
+        padding:14px;
+    }
+
+    .category-hero-media img{
+        border-radius:18px;
+        padding:8px;
+    }
+
+    .category-hero-content{
+        padding:24px 18px 22px;
+    }
+
+    .category-description-box{
+        padding:16px 15px;
+        border-radius:18px;
+    }
+
+    .category-meta{
+        gap:10px;
+    }
+
+    .category-meta-box{
+        flex:1 1 calc(50% - 10px);
+        min-width:auto;
+        padding:14px;
+    }
+
+    .product-section-head{
+        margin-bottom:18px;
+    }
+
+    .product-image-wrap{
+        min-height:220px;
+        padding:14px;
+    }
+
+    .product-image-wrap img{
+        height:180px;
+    }
+
+    .product-card-body{
+        padding:16px 14px 15px;
+        gap:10px;
+    }
+
+    .product-title{
+        min-height:auto;
+    }
+
+    .product-title a{
+        font-size:.96rem;
+    }
+
+    .product-short-line{
+        font-size:.85rem;
+    }
+
+    .product-price{
+        font-size:1rem;
+    }
+
+    .view-details-btn{
+        padding:11px 12px;
+        font-size:.88rem;
+        border-radius:13px;
+    }
+}
+
+@media (max-width:575.98px){
+    .category-hero-media{
+        min-height:240px;
+    }
+
+    .category-badge{
+        font-size:.8rem;
+        padding:8px 14px;
+        margin-bottom:14px;
+    }
+
+    .category-hero-content h1{
+        margin-bottom:12px;
+    }
+
+    .category-hero-content .hero-subtitle{
+        font-size:.93rem;
+        line-height:1.75;
+    }
+
+    .category-description-box p{
+        font-size:.92rem;
+        line-height:1.8;
+    }
+
+    .category-toggle-btn{
+        width:100%;
+    }
+
+    .product-image-wrap{
+        min-height:205px;
+    }
+
+    .product-image-wrap img{
+        height:168px;
+    }
+}
+/* ================= CATEGORY DETAIL PAGE END ================= */
+</style>
+
+<section class="category-detail-page py-5">
+    <div class="container">
+
+        <!-- ===== CATEGORY HERO START ===== -->
+        <div class="category-hero">
+            <div class="category-hero-inner">
+
+                <div class="category-hero-media">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default.jpg' %}" alt="{{ category.title }}">
+                    {% endif %}
+                </div>
+
+                <div class="category-hero-content">
+                    <span class="category-badge">Premium Category Collection</span>
+
+                    <h1>{{ category.title }}</h1>
+
+                    <p class="hero-subtitle">
+                        Discover quality products, detailed information, and the best available options under this category with a clean and modern shopping experience.
+                    </p>
+
+                    <div class="category-description-box">
+                        <p id="categoryDesc">
+                            {{ category.description|truncatewords:25 }}
+                        </p>
+
+                        <p id="categoryFullDesc" style="display:none;">
+                            {{ category.description }}
+                        </p>
+
+                        <div class="category-toggle-wrap">
+                            <button onclick="toggleCategoryDescription()" class="category-toggle-btn" id="categoryToggleBtn">
+                                See More
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="category-meta">
+                        <div class="category-meta-box">
+                            <span class="category-meta-label">Category Name</span>
+                            <span class="category-meta-value">{{ category.title }}</span>
+                        </div>
+
+                        <div class="category-meta-box">
+                            <span class="category-meta-label">Total Products</span>
+                            <span class="category-meta-value">{{ products|length }} Items</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- ===== CATEGORY HERO END ===== -->
+
+        <!-- ===== PRODUCT SECTION HEAD START ===== -->
+        <div class="product-section-head">
+            <div>
+                <h2>Explore Products</h2>
+                <p>Browse all products available in this category with a clean modern layout and full details.</p>
+            </div>
+        </div>
+        <!-- ===== PRODUCT SECTION HEAD END ===== -->
+
+        <!-- ===== PRODUCTS START ===== -->
+        <div class="row g-4 justify-content-center">
+            {% for product in products %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex">
+                <div class="product-card w-100">
+
+                    <a href="{% url 'product_detail' product.slug %}">
+                        <div class="product-image-wrap">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        </div>
+                    </a>
+
+                    <div class="product-card-body">
+                        <h6 class="product-title">
+                            <a href="{% url 'product_detail' product.slug %}">
+                                {{ product.title }}
+                            </a>
+                        </h6>
+
+                        <p class="product-short-line">
+                            Premium quality product with complete details and attractive presentation.
+                        </p>
+
+                        <div class="product-bottom">
+                            <p class="product-price">Rs. {{ product.final_price }}</p>
+                            <span class="stock-badge">Available</span>
+                        </div>
+
+                        <a href="{% url 'product_detail' product.slug %}" class="view-details-btn">
+                            View Details
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-products">
+                    <h5>No products in this category</h5>
+                    <p>This category does not have any products available right now.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- ===== PRODUCTS END ===== -->
+
+    </div>
+</section>
+
+<script>
+function toggleCategoryDescription(){
+    var shortDesc = document.getElementById("categoryDesc");
+    var fullDesc = document.getElementById("categoryFullDesc");
+    var btn = document.getElementById("categoryToggleBtn");
+
+    if(fullDesc.style.display === "none"){
+        fullDesc.style.display = "block";
+        shortDesc.style.display = "none";
+        btn.innerText = "See Less";
+    } else {
+        fullDesc.style.display = "none";
+        shortDesc.style.display = "block";
+        btn.innerText = "See More";
+    }
+}
+</script>
+
+{% endblock %}

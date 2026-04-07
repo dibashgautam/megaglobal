@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Mega Sewa Global Admin{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/admin_custom.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="custom-admin-branding">
+    <div class="brand-left">
+        <div class="brand-logo">
+            <span>MS</span>
+        </div>
+
+        <div class="brand-text">
+            <h1 id="site-name">
+                <a href="{% url 'admin:index' %}">Mega Sewa Global</a>
+            </h1>
+            <p class="brand-subtitle">
+                Professional Machine, Product & Site Management Dashboard
+            </p>
+        </div>
+    </div>
+
+    
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

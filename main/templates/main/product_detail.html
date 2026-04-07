@@ -1,0 +1,1212 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.title }} | Mega Sewa Global{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+
+<style>
+/* ================= PREMIUM PRODUCT DETAIL PAGE START ================= */
+.product-detail{
+    background:
+        radial-gradient(circle at top left, rgba(13,110,253,.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(111,66,193,.12), transparent 20%),
+        radial-gradient(circle at bottom left, rgba(25,135,84,.08), transparent 22%),
+        linear-gradient(180deg,#f8fbff 0%,#eef4ff 50%,#f8fbff 100%);
+    position:relative;
+    overflow:hidden;
+}
+
+.product-detail .container{
+    position:relative;
+    z-index:2;
+}
+
+/* ===== HERO WRAP ===== */
+.product-hero{
+    background:linear-gradient(135deg,#ffffff 0%,#f8fbff 100%);
+    border-radius:30px;
+    padding:28px;
+    box-shadow:0 18px 55px rgba(15,23,42,.09);
+    border:1px solid rgba(226,232,240,.85);
+    margin-bottom:40px;
+}
+
+/* ===== IMAGE + INFO GRID ===== */
+.product-main-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:28px;
+    align-items:start;
+}
+
+/* ===== IMAGE SECTION ===== */
+.product-gallery-card{
+    background:linear-gradient(180deg,#ffffff 0%,#f7faff 100%);
+    border-radius:28px;
+    padding:18px;
+    border:1px solid #e9eef6;
+    box-shadow:0 12px 35px rgba(15,23,42,.06);
+}
+
+.product-image-box{
+    width:100%;
+    min-height:560px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at top left, rgba(13,110,253,.08), transparent 24%),
+        linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+    padding:18px;
+}
+
+.product-image-box img{
+    width:100%;
+    max-height:500px;
+    object-fit:contain;
+    display:block;
+    transition:.35s ease;
+}
+
+.product-image-box:hover img{
+    transform:scale(1.02);
+}
+
+/* ===== SLIDER BUTTONS ===== */
+.slider-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:50%;
+    background:rgba(15,23,42,.72);
+    color:#fff;
+    font-size:20px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:2;
+    transition:.3s ease;
+    box-shadow:0 10px 22px rgba(0,0,0,.18);
+}
+
+.slider-btn:hover{
+    background:linear-gradient(135deg,#0d6efd,#6f42c1);
+    transform:translateY(-50%) scale(1.08);
+}
+
+.prev-btn{left:16px;}
+.next-btn{right:16px;}
+
+/* ===== THUMB FEEL ===== */
+.gallery-note{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:16px;
+    background:#f4f8ff;
+    color:#475569;
+    font-size:.92rem;
+    font-weight:600;
+}
+
+/* ===== INFO SECTION ===== */
+.product-info-card{
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0d6efd 100%);
+    border-radius:28px;
+    padding:28px 24px;
+    color:#fff;
+    box-shadow:0 18px 45px rgba(15,23,42,.16);
+    position:relative;
+    overflow:hidden;
+}
+
+.product-info-card::before{
+    content:"";
+    position:absolute;
+    top:-70px;
+    right:-70px;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+}
+
+.product-info-card::after{
+    content:"";
+    position:absolute;
+    bottom:-60px;
+    left:-60px;
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+}
+
+.product-info-content{
+    position:relative;
+    z-index:2;
+}
+
+.product-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 16px;
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.18);
+    color:#fff;
+    font-size:.85rem;
+    font-weight:700;
+    margin-bottom:16px;
+    backdrop-filter:blur(6px);
+}
+
+.product-title{
+    font-size:clamp(1.7rem,3vw,2.7rem);
+    line-height:1.2;
+    font-weight:800;
+    margin-bottom:14px;
+    color:#fff;
+}
+
+.product-subtitle{
+    color:rgba(255,255,255,.88);
+    font-size:.98rem;
+    line-height:1.8;
+    margin-bottom:20px;
+}
+
+/* ===== INFO CHIPS ===== */
+.product-highlights{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:22px;
+}
+
+.highlight-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.14);
+    color:#fff;
+    font-size:.88rem;
+    font-weight:600;
+}
+
+/* ===== PRICE CARD ===== */
+.price-card{
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:24px;
+    padding:20px 18px;
+    backdrop-filter:blur(10px);
+    margin-bottom:22px;
+}
+
+.price-row{
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin:0;
+}
+
+.original-price{
+    text-decoration:line-through;
+    color:rgba(255,255,255,.75);
+    font-size:1.05rem;
+    margin:0;
+}
+
+.discount-badge{
+    background:linear-gradient(135deg,#ff4d6d,#dc3545);
+    color:#fff;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:.88rem;
+    font-weight:700;
+    box-shadow:0 10px 20px rgba(220,53,69,.2);
+}
+
+.final-price{
+    font-size:2rem;
+    font-weight:800;
+    color:#fff;
+    margin:0;
+}
+
+.price-note{
+    margin-top:10px;
+    color:rgba(255,255,255,.78);
+    font-size:.92rem;
+    line-height:1.7;
+}
+
+/* ===== ORDER BUTTON ===== */
+.order-actions{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.whatsapp-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    text-align:center;
+    font-size:1rem;
+    font-weight:700;
+    border:none;
+    border-radius:18px;
+    padding:15px 18px;
+    background:linear-gradient(135deg,#25d366 0%,#198754 100%);
+    color:#fff;
+    box-shadow:0 14px 28px rgba(37,211,102,.22);
+    transition:.3s ease;
+}
+
+.whatsapp-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 34px rgba(37,211,102,.28);
+    color:#fff;
+}
+
+.secondary-trust{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.trust-item{
+    flex:1 1 calc(50% - 12px);
+    min-width:150px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.trust-item i{
+    font-size:1.1rem;
+    margin-top:3px;
+    color:#ffd166;
+}
+
+.trust-item strong{
+    display:block;
+    font-size:.92rem;
+    margin-bottom:3px;
+}
+
+.trust-item span{
+    color:rgba(255,255,255,.8);
+    font-size:.83rem;
+    line-height:1.6;
+}
+
+/* ===== DIVIDER ===== */
+.section-divider{
+    border:0;
+    height:1px;
+    background:linear-gradient(90deg,transparent,#d7e2f1,transparent);
+    margin:42px 0;
+}
+
+/* ===== DESCRIPTION ===== */
+.description-wrap{
+    max-width:1000px;
+    margin:auto;
+}
+
+.description-card{
+    background:#fff;
+    border-radius:28px;
+    box-shadow:0 14px 40px rgba(15,23,42,.08);
+    padding:28px 24px;
+    border:1px solid #edf2f7;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:1.55rem;
+    font-weight:800;
+    color:#0f172a;
+    margin-bottom:18px;
+}
+
+.section-title i{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#0d6efd,#6f42c1);
+    color:#fff;
+    font-size:1.05rem;
+    box-shadow:0 10px 24px rgba(13,110,253,.2);
+}
+
+.product-description{
+    line-height:1.85;
+    color:#334155;
+    font-size:.98rem;
+}
+
+.product-description table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:14px;
+    overflow:hidden;
+    border-radius:16px;
+}
+
+.product-description table,
+.product-description th,
+.product-description td{
+    border:1px solid #e2e8f0;
+    padding:10px 12px;
+}
+
+.product-description th{
+    background:#f8fbff;
+    color:#0f172a;
+    font-weight:700;
+}
+
+.description-btn-wrap{
+    margin-top:18px;
+    text-align:center;
+}
+
+#toggleDescription{
+    border:none;
+    border-radius:999px;
+    padding:11px 24px;
+    background:linear-gradient(135deg,#111827,#334155);
+    color:#fff;
+    font-size:.92rem;
+    font-weight:700;
+    transition:.3s ease;
+}
+
+#toggleDescription:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg,#0d6efd,#6f42c1);
+}
+
+/* ===== RELATED PRODUCTS ===== */
+.related-section{
+    margin-top:48px;
+}
+
+.related-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    text-align:center;
+    font-weight:800;
+    margin-bottom:28px;
+    color:#0f172a;
+    font-size:clamp(1.45rem,2.5vw,2rem);
+}
+
+.related-title i{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#ff6b6b,#f59e0b);
+    color:#fff;
+    box-shadow:0 10px 20px rgba(245,158,11,.22);
+}
+
+.related-card{
+    background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+    border-radius:22px;
+    overflow:hidden;
+    transition:.35s ease;
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    border:1px solid #edf2f7;
+    height:100%;
+}
+
+.related-card .image-wrapper{
+    width:100%;
+    height:240px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at top left, rgba(13,110,253,.08), transparent 25%),
+        linear-gradient(180deg,#ffffff 0%,#f4f8ff 100%);
+    overflow:hidden;
+    padding:18px;
+}
+
+.related-card .image-wrapper img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    transition:.35s ease;
+}
+
+.related-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 45px rgba(15,23,42,.14);
+}
+
+.related-card:hover .image-wrapper img{
+    transform:scale(1.05);
+}
+
+.related-card-body{
+    padding:18px 16px 18px;
+}
+
+.related-card-title{
+    min-height:52px;
+    margin-bottom:10px;
+    line-height:1.5;
+}
+
+.related-card-title a{
+    text-decoration:none;
+    color:#0f172a;
+    font-weight:800;
+    font-size:1rem;
+}
+
+.related-card-title a:hover{
+    color:#0d6efd;
+}
+
+.related-price{
+    font-weight:800;
+    color:#dc2626;
+    margin-bottom:12px;
+    font-size:1.05rem;
+}
+
+.related-btn{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:11px 14px;
+    background:linear-gradient(135deg,#111827,#374151);
+    color:#fff !important;
+    text-decoration:none;
+    font-size:.9rem;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:.3s ease;
+}
+
+.related-btn:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg,#0d6efd,#6f42c1);
+    color:#fff !important;
+}
+
+/* ===== CONTACT MODAL ===== */
+.contact-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(2,6,23,.68);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:16px;
+    backdrop-filter:blur(6px);
+}
+
+.contact-modal.show{
+    display:flex;
+}
+
+.contact-box{
+    width:100%;
+    max-width:460px;
+    background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+    border-radius:28px;
+    padding:28px 22px;
+    text-align:center;
+    box-shadow:0 25px 70px rgba(0,0,0,.22);
+    animation:modalPop .22s ease;
+    border:1px solid #e8eef7;
+}
+
+@keyframes modalPop{
+    from{transform:scale(.96);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+.contact-icon{
+    width:64px;
+    height:64px;
+    margin:0 auto 14px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#25d366,#0d6efd);
+    color:#fff;
+    font-size:1.5rem;
+    box-shadow:0 14px 30px rgba(13,110,253,.18);
+}
+
+.contact-box h5{
+    font-weight:800;
+    margin-bottom:10px;
+    color:#0f172a;
+    font-size:1.35rem;
+}
+
+.contact-subtitle{
+    color:#64748b;
+    font-size:.95rem;
+    margin-bottom:20px;
+    line-height:1.7;
+}
+
+.contact-option{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    border-radius:16px;
+    padding:13px 14px;
+    margin-bottom:12px;
+    font-weight:700;
+    text-decoration:none;
+    transition:.3s ease;
+}
+
+.contact-option:hover{
+    transform:translateY(-2px);
+}
+
+.contact-number-box{
+    background:#f8fbff;
+    border:1px dashed #cbd5e1;
+    border-radius:16px;
+    padding:14px;
+    margin:12px 0 16px;
+}
+
+.contact-number-box strong{
+    display:block;
+    margin-bottom:4px;
+    color:#0f172a;
+}
+
+.copy-feedback{
+    display:none;
+    color:#198754;
+    font-size:.9rem;
+    margin-top:8px;
+    font-weight:600;
+}
+
+.copy-feedback.show{
+    display:block;
+}
+
+.desktop-only{
+    display:none;
+}
+
+.mobile-only{
+    display:none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1199px){
+    .product-image-box{
+        min-height:500px;
+    }
+}
+
+@media(max-width:991px){
+    .product-main-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-image-box{
+        min-height:400px;
+    }
+
+    .product-info-card{
+        padding:24px 20px;
+    }
+
+    .related-card .image-wrapper{
+        height:220px;
+    }
+}
+
+@media(max-width:767px){
+    .product-hero{
+        padding:16px;
+        border-radius:22px;
+    }
+
+    .product-gallery-card,
+    .product-info-card,
+    .description-card,
+    .contact-box{
+        border-radius:22px;
+    }
+
+    .product-image-box{
+        min-height:320px;
+        padding:12px;
+    }
+
+    .product-image-box img{
+        max-height:280px;
+    }
+
+    .slider-btn{
+        width:40px;
+        height:40px;
+        font-size:17px;
+    }
+
+    .product-title{
+        font-size:1.65rem;
+    }
+
+    .final-price{
+        font-size:1.65rem;
+    }
+
+    .secondary-trust{
+        flex-direction:column;
+    }
+
+    .trust-item{
+        min-width:100%;
+    }
+
+    .related-card .image-wrapper{
+        height:200px;
+        padding:14px;
+    }
+
+    .description-card{
+        padding:22px 16px;
+    }
+
+    .section-title{
+        font-size:1.3rem;
+    }
+
+    .section-title i,
+    .related-title i{
+        width:40px;
+        height:40px;
+        border-radius:12px;
+    }
+}
+
+@media(max-width:576px){
+    .product-detail{
+        padding-top:8px;
+    }
+
+    .product-image-box{
+        min-height:280px;
+    }
+
+    .product-image-box img{
+        max-height:235px;
+    }
+
+    .gallery-note{
+        font-size:.84rem;
+    }
+
+    .product-badge{
+        font-size:.78rem;
+        padding:8px 14px;
+    }
+
+    .product-title{
+        font-size:1.45rem;
+    }
+
+    .product-subtitle,
+    .price-note{
+        font-size:.92rem;
+    }
+
+    .final-price{
+        font-size:1.5rem;
+    }
+
+    .whatsapp-btn{
+        font-size:.95rem;
+        padding:13px 16px;
+        border-radius:15px;
+    }
+
+    .contact-box{
+        padding:22px 16px;
+    }
+}
+/* ================= PREMIUM PRODUCT DETAIL PAGE END ================= */
+</style>
+
+<section class="product-detail py-5">
+    <div class="container">
+
+        <div class="product-hero">
+            <div class="product-main-grid">
+
+                <!-- ===== LEFT IMAGE SECTION ===== -->
+                <div class="product-gallery-card">
+                    <div class="product-image-box shadow-sm position-relative">
+
+                        <img id="sliderImage"
+                             src="{{ product.image.url }}"
+                             alt="{{ product.title }}">
+
+                        <button class="slider-btn prev-btn" type="button" onclick="prevImage()" aria-label="Previous image">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <button class="slider-btn next-btn" type="button" onclick="nextImage()" aria-label="Next image">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="gallery-note">
+                        <i class="fas fa-images"></i>
+                        <span>Product image gallery preview</span>
+                    </div>
+                </div>
+
+                <!-- ===== RIGHT INFO SECTION ===== -->
+                <div class="product-info-card">
+                    <div class="product-info-content">
+
+                        <span class="product-badge">
+                            <i class="fas fa-star"></i> Premium Product Detail
+                        </span>
+
+                        <h1 class="product-title">{{ product.title }}</h1>
+
+                        <p class="product-subtitle">
+                            Explore complete product details, pricing, and order options in a clean premium interface designed for a better user experience.
+                        </p>
+
+                        <div class="product-highlights">
+                            <span class="highlight-chip"><i class="fas fa-check-circle"></i> Quality Assured</span>
+                            <span class="highlight-chip"><i class="fas fa-shipping-fast"></i> Quick Response</span>
+                            <span class="highlight-chip"><i class="fas fa-headset"></i> Easy Support</span>
+                        </div>
+
+                        <div class="price-card">
+                            <div class="price-row">
+                                {% if product.discount_percent > 0 %}
+                                    <p class="original-price mb-0">
+                                        Rs. {{ product.original_price }}
+                                    </p>
+
+                                    <span class="discount-badge">
+                                        <i class="fas fa-tags"></i> -{{ product.discount_percent }}%
+                                    </span>
+                                {% endif %}
+
+                                <p class="final-price mb-0">
+                                    Rs. {{ product.final_price }}
+                                </p>
+                            </div>
+
+                            <div class="price-note">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Transparent pricing with trusted service support.
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button type="button"
+                                    class="whatsapp-btn"
+                                    onclick="openContactOptions()">
+                                <i class="fab fa-whatsapp"></i> Order Now
+                            </button>
+
+                            <div class="secondary-trust">
+                                <div class="trust-item">
+                                    <i class="fas fa-phone-volume"></i>
+                                    <div>
+                                        <strong>Fast Contact</strong>
+                                        <span>WhatsApp, SMS वा call बाट तुरुन्त सम्पर्क</span>
+                                    </div>
+                                </div>
+
+                                <div class="trust-item">
+                                    <i class="fas fa-user-shield"></i>
+                                    <div>
+                                        <strong>Trusted Service</strong>
+                                        <span>Responsive support र simple order process</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Hidden Image List -->
+        <div id="imageData" style="display:none;">
+            <span data-img="{{ product.image.url }}"></span>
+            {% for img in product.gallery.all %}
+                <span data-img="{{ img.image.url }}"></span>
+            {% endfor %}
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- ===== DESCRIPTION ===== -->
+        <div class="description-wrap">
+            <div class="description-card">
+                <h2 class="section-title">
+                    <i class="fas fa-circle-info"></i>
+                    Product Description
+                </h2>
+
+                <div class="product-description text-start">
+                    <div id="short-description">
+                        {{ product.description|truncatewords_html:60|safe }}
+                    </div>
+
+                    <div id="full-description" style="display:none;">
+                        {{ product.description|safe }}
+                    </div>
+                </div>
+
+                <div class="description-btn-wrap">
+                    <button id="toggleDescription" type="button">
+                        See More
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== RELATED PRODUCTS ===== -->
+        <div class="related-section">
+            <h3 class="related-title">
+                <i class="fas fa-layer-group"></i>
+                Related Products
+            </h3>
+
+            <div class="row g-4 justify-content-center">
+                {% for item in product.category.products.all|slice:":4" %}
+                    {% if item.id != product.id %}
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex">
+                            <div class="related-card w-100">
+
+                                <a href="{% url 'product_detail' item.slug %}">
+                                    <div class="image-wrapper">
+                                        <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                                    </div>
+                                </a>
+
+                                <div class="related-card-body text-center">
+                                    <h6 class="related-card-title">
+                                        <a href="{% url 'product_detail' item.slug %}">
+                                            {{ item.title }}
+                                        </a>
+                                    </h6>
+
+                                    <p class="related-price">
+                                        Rs. {{ item.final_price }}
+                                    </p>
+
+                                    <a href="{% url 'product_detail' item.slug %}" class="related-btn">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== CONTACT MODAL ===== -->
+<div id="contactModal" class="contact-modal" aria-hidden="true">
+    <div class="contact-box">
+        <div class="contact-icon">
+            <i class="fas fa-comments"></i>
+        </div>
+
+        <h5>अर्डर गर्न माध्यम छान्नुहोस्</h5>
+        <p class="contact-subtitle">
+            तपाईं WhatsApp, SMS वा call मध्ये आफूलाई सजिलो पर्ने माध्यमबाट सम्पर्क गर्न सक्नुहुन्छ।
+        </p>
+
+        <!-- WhatsApp -->
+        <a id="whatsappLink"
+           href="#"
+           target="_blank"
+           rel="noopener"
+           class="btn btn-success contact-option">
+            <i class="fab fa-whatsapp"></i> WhatsApp मा Message
+        </a>
+
+        <!-- SMS: Mobile मा मात्र -->
+        <a id="smsLink"
+           href="#"
+           class="btn btn-primary contact-option mobile-only">
+            <i class="fas fa-sms"></i> SMS पठाउनुहोस्
+        </a>
+
+        <!-- Call: Mobile मा मात्र -->
+        <a id="callLink"
+           href="tel:+9779707798231"
+           class="btn btn-dark contact-option mobile-only">
+            <i class="fas fa-phone-alt"></i> Call गर्नुहोस्
+        </a>
+
+        <!-- Desktop helper -->
+        <div class="contact-number-box desktop-only">
+            <strong><i class="fas fa-phone me-1"></i> Contact Number</strong>
+            <span id="displayNumber">9707798231</span>
+            <button type="button"
+                    class="btn btn-outline-secondary btn-sm w-100 mt-3"
+                    onclick="copyContactNumber()">
+                <i class="fas fa-copy me-1"></i> नम्बर Copy गर्नुहोस्
+            </button>
+            <div id="copyFeedback" class="copy-feedback">नम्बर copy भयो।</div>
+        </div>
+
+        <button type="button"
+                onclick="closeContactOptions()"
+                class="btn btn-outline-danger w-100 mt-2">
+            <i class="fas fa-xmark me-1"></i> Cancel
+        </button>
+    </div>
+</div>
+
+<script>
+/* ===== PRODUCT / CONTACT CONFIG ===== */
+const CONTACT_NUMBER = "9779707798231";
+const DISPLAY_NUMBER = "9707798231";
+
+/* ===== IMAGE SLIDER ===== */
+let images = [];
+let currentIndex = 0;
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("#imageData span").forEach(item => {
+        const img = item.getAttribute("data-img");
+        if (img) images.push(img);
+    });
+
+    const toggleBtn = document.getElementById("toggleDescription");
+    const shortDesc = document.getElementById("short-description");
+    const fullDesc = document.getElementById("full-description");
+
+    if (toggleBtn && shortDesc && fullDesc) {
+        toggleBtn.addEventListener("click", function () {
+            if (fullDesc.style.display === "none") {
+                fullDesc.style.display = "block";
+                shortDesc.style.display = "none";
+                toggleBtn.innerText = "See Less";
+            } else {
+                fullDesc.style.display = "none";
+                shortDesc.style.display = "block";
+                toggleBtn.innerText = "See More";
+            }
+        });
+    }
+
+    const modal = document.getElementById("contactModal");
+    if (modal) {
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+                closeContactOptions();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            closeContactOptions();
+        }
+    });
+});
+
+function showImage(index) {
+    const sliderImage = document.getElementById("sliderImage");
+    if (!sliderImage || !images.length) return;
+    sliderImage.src = images[index];
+}
+
+function nextImage() {
+    if (!images.length) return;
+    currentIndex++;
+    if (currentIndex >= images.length) {
+        currentIndex = 0;
+    }
+    showImage(currentIndex);
+}
+
+function prevImage() {
+    if (!images.length) return;
+    currentIndex--;
+    if (currentIndex < 0) {
+        currentIndex = images.length - 1;
+    }
+    showImage(currentIndex);
+}
+
+/* ===== CONTACT MODAL ===== */
+function isMobileDevice() {
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(navigator.userAgent);
+}
+
+function buildOrderMessage() {
+    const productTitle = "{{ product.title|escapejs }}";
+    const productPrice = "{{ product.final_price|escapejs }}";
+    const productLink = "{{ request.build_absolute_uri|escapejs }}";
+
+    return `Hello Mega Sewa Global,
+
+🛒 Order Request
+📦 Product: ${productTitle}
+💰 Price: Rs. ${productPrice}
+🔗 Link: ${productLink}`;
+}
+
+function openContactOptions() {
+    const message = buildOrderMessage();
+    const encodedMessage = encodeURIComponent(message);
+
+    const whatsappLink = document.getElementById("whatsappLink");
+    const smsLink = document.getElementById("smsLink");
+    const callLink = document.getElementById("callLink");
+    const modal = document.getElementById("contactModal");
+    const desktopOnlyItems = document.querySelectorAll(".desktop-only");
+    const mobileOnlyItems = document.querySelectorAll(".mobile-only");
+
+    if (whatsappLink) {
+        whatsappLink.href = `https://wa.me/${CONTACT_NUMBER}?text=${encodedMessage}`;
+    }
+
+    if (smsLink) {
+        smsLink.href = `sms:+${CONTACT_NUMBER}?body=${encodedMessage}`;
+    }
+
+    if (callLink) {
+        callLink.href = `tel:+${CONTACT_NUMBER}`;
+    }
+
+    if (isMobileDevice()) {
+        mobileOnlyItems.forEach(item => item.style.display = "flex");
+        desktopOnlyItems.forEach(item => item.style.display = "none");
+    } else {
+        mobileOnlyItems.forEach(item => item.style.display = "none");
+        desktopOnlyItems.forEach(item => item.style.display = "block");
+    }
+
+    if (modal) {
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeContactOptions() {
+    const modal = document.getElementById("contactModal");
+    if (modal) {
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+    }
+    document.body.style.overflow = "";
+}
+
+function copyContactNumber() {
+    const copyFeedback = document.getElementById("copyFeedback");
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(DISPLAY_NUMBER).then(function () {
+            if (copyFeedback) {
+                copyFeedback.classList.add("show");
+                setTimeout(() => {
+                    copyFeedback.classList.remove("show");
+                }, 2200);
+            }
+        }).catch(function () {
+            fallbackCopyText(DISPLAY_NUMBER);
+        });
+    } else {
+        fallbackCopyText(DISPLAY_NUMBER);
+    }
+}
+
+function fallbackCopyText(text) {
+    const tempInput = document.createElement("input");
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+    const copyFeedback = document.getElementById("copyFeedback");
+    if (copyFeedback) {
+        copyFeedback.classList.add("show");
+        setTimeout(() => {
+            copyFeedback.classList.remove("show");
+        }, 2200);
+    }
+}
+</script>
+
+{% endblock %}

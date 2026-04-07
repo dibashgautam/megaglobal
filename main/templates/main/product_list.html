@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* ================= ALL PRODUCTS PAGE ================= */
+.all-products-page{
+    background:#f8f9fa;
+}
+
+/* ---------- PAGE HEADING ---------- */
+.all-products-header{
+    text-align:center;
+    margin-bottom:38px;
+}
+
+.all-products-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#dc3545;
+    color:#fff;
+    padding:9px 16px;
+    border-radius:50px;
+    font-size:.88rem;
+    font-weight:700;
+    margin-bottom:14px;
+    box-shadow:0 10px 25px rgba(220,53,69,.18);
+}
+
+.all-products-title{
+    font-size:clamp(2rem,4vw,3rem);
+    font-weight:800;
+    color:#111;
+    margin-bottom:10px;
+}
+
+.all-products-subtitle{
+    max-width:720px;
+    margin:0 auto;
+    color:#6c757d;
+    font-size:1rem;
+    line-height:1.8;
+}
+
+/* ---------- PRODUCT CARD ---------- */
+.product-card{
+    background:#fff;
+    border:none;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 8px 26px rgba(0,0,0,.08);
+    transition:.35s ease;
+    position:relative;
+    height:100%;
+}
+
+.product-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:#dc3545;
+}
+
+.product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 40px rgba(0,0,0,.14);
+}
+
+/* ---------- IMAGE ---------- */
+.product-image-wrap{
+    width:100%;
+    height:250px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    overflow:hidden;
+    border-bottom:1px solid #f1f1f1;
+}
+
+.product-image-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    transition:.35s ease;
+    display:block;
+}
+
+.product-card:hover .product-image-wrap img{
+    transform:scale(1.05);
+}
+
+/* ---------- BODY ---------- */
+.product-body{
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    height:calc(100% - 250px);
+}
+
+.product-mini-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    width:max-content;
+    background:rgba(220,53,69,.08);
+    color:#dc3545;
+    padding:6px 12px;
+    border-radius:50px;
+    font-size:.76rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.product-title{
+    margin-bottom:10px;
+    min-height:50px;
+    line-height:1.5;
+}
+
+.product-title a{
+    text-decoration:none;
+    color:#111;
+    font-size:1rem;
+    font-weight:700;
+    transition:.25s ease;
+}
+
+.product-title a:hover{
+    color:#dc3545;
+}
+
+.product-short-text{
+    color:#6c757d;
+    font-size:.9rem;
+    line-height:1.7;
+    margin-bottom:14px;
+}
+
+.price-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:auto;
+    margin-bottom:14px;
+}
+
+.product-price{
+    color:#dc3545;
+    font-size:1.1rem;
+    font-weight:800;
+    margin:0;
+}
+
+.stock-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#f8f9fa;
+    color:#111;
+    border:1px solid #e9ecef;
+    padding:6px 11px;
+    border-radius:50px;
+    font-size:.76rem;
+    font-weight:700;
+}
+
+/* ---------- BUTTON ---------- */
+.view-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-decoration:none;
+    border:none;
+    border-radius:14px;
+    padding:12px 16px;
+    background:#111;
+    color:#fff !important;
+    font-size:.92rem;
+    font-weight:700;
+    transition:.3s ease;
+}
+
+.view-btn:hover{
+    background:#dc3545;
+    color:#fff !important;
+    transform:translateY(-2px);
+}
+
+/* ---------- EMPTY ---------- */
+.empty-products{
+    background:#fff;
+    border-radius:22px;
+    padding:45px 20px;
+    text-align:center;
+    box-shadow:0 8px 26px rgba(0,0,0,.08);
+}
+
+.empty-products h5{
+    color:#111;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.empty-products p{
+    color:#6c757d;
+    margin:0;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:991.98px){
+    .product-image-wrap{
+        height:225px;
+    }
+
+    .product-body{
+        height:calc(100% - 225px);
+    }
+}
+
+@media(max-width:767.98px){
+    .all-products-header{
+        margin-bottom:28px;
+    }
+
+    .all-products-subtitle{
+        font-size:.94rem;
+    }
+
+    .product-image-wrap{
+        height:210px;
+        padding:14px;
+    }
+
+    .product-body{
+        height:calc(100% - 210px);
+        padding:15px;
+    }
+
+    .product-title{
+        min-height:auto;
+    }
+
+    .product-title a{
+        font-size:.95rem;
+    }
+
+    .product-short-text{
+        font-size:.84rem;
+    }
+
+    .product-price{
+        font-size:1rem;
+    }
+
+    .view-btn{
+        font-size:.88rem;
+        padding:11px 14px;
+    }
+}
+
+@media(max-width:575.98px){
+    .product-image-wrap{
+        height:190px;
+    }
+
+    .product-body{
+        height:calc(100% - 190px);
+    }
+
+    .all-products-badge{
+        font-size:.8rem;
+        padding:8px 14px;
+    }
+}
+</style>
+
+<section class="all-products-page py-5">
+    <div class="container">
+
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="all-products-header">
+            <span class="all-products-badge">
+                <i class="fas fa-box-open"></i> Premium Collection
+            </span>
+
+            <h2 class="all-products-title">All Products</h2>
+
+            <p class="all-products-subtitle">
+                Browse all available products with a clean, modern and professional shopping experience.
+            </p>
+        </div>
+
+        <!-- ===== PRODUCTS GRID ===== -->
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+
+                <div class="product-card w-100">
+
+                    <a href="{% url 'product_detail' product.slug %}">
+                        <div class="product-image-wrap">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        </div>
+                    </a>
+
+                    <div class="product-body">
+
+                        <span class="product-mini-badge">
+                            <i class="fas fa-star"></i> Featured
+                        </span>
+
+                        <h6 class="product-title">
+                            <a href="{% url 'product_detail' product.slug %}">
+                                {{ product.title }}
+                            </a>
+                        </h6>
+
+                        <p class="product-short-text">
+                            Premium quality product with complete details and professional presentation.
+                        </p>
+
+                        <div class="price-row">
+                            <p class="product-price">Rs. {{ product.final_price }}</p>
+
+                            <span class="stock-badge">
+                                <i class="fas fa-check-circle"></i> Available
+                            </span>
+                        </div>
+
+                        <a href="{% url 'product_detail' product.slug %}" class="view-btn">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-products">
+                    <h5>No products available</h5>
+                    <p>There are currently no products to display.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

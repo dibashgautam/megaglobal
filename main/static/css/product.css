@@ -1,0 +1,32 @@
+/* ================= PRODUCT DETAIL ================= */
+
+.product-image-box img{
+    height:450px;
+    object-fit:cover;
+}
+
+.product-description{
+    line-height:1.7;
+}
+
+.product-description table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.product-description table, 
+.product-description th, 
+.product-description td{
+    border:1px solid #ddd;
+    padding:8px;
+}
+
+.product-description th{
+    background:#f8f8f8;
+}
+
+@media(max-width:991px){
+    .product-image-box img{
+        height:300px;
+    }
+}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#f4f6f9;color:#333;line-height:1.7}
+.container{width:90%;max-width:1100px;margin:auto}
+.section{padding:60px 0}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title h2{font-size:32px;font-weight:700;color:#0d2c54;margin-bottom:10px}
+.section-title p{color:#777;font-size:16px}
+.card{background:#fff;padding:40px;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,0.08)}
+.highlight{color:#0d2c54;font-weight:600}
+.list{margin:20px 0;padding-left:20px}
+.list li{margin-bottom:8px}
+.strength-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;margin-top:20px}
+.strength-item{background:#f0f4fa;padding:15px;border-radius:6px;font-weight:500}
+.quote{text-align:center;font-size:20px;font-weight:600;color:#0d2c54;margin-top:20px}
+.footer-tag{text-align:center;margin-top:30px;font-weight:600;color:#0d2c54;font-size:18px}
+@media(max-width:768px){
+.section{padding:40px 0}
+.section-title h2{font-size:26px}
+}
+</style>
+
+
+<section class="section">
+<div class="container">
+
+<div class="section-title">
+<h2>About Us</h2>
+<p>Mega Sewa Global Pvt. Ltd.</p>
+</div>
+
+<div class="card">
+
+<p><span class="highlight">Mega Sewa Global Pvt. Ltd.</span> is a fast-growing, multi-sector trading company based in Kathmandu, Nepal. Established under the Company Act of Nepal, we are driven by a clear mission — to connect markets, deliver quality, and create long-term value.</p>
+
+<p><span class="highlight">Mega Sewa Global Pvt. Ltd. (2) …</span></p>
+
+<p>We operate with strength in <strong>Import • Export • Supply • Distribution</strong>, serving government bodies, private institutions, industries, contractors, and retailers with efficiency and professionalism.</p>
+
+<br>
+
+<h3 class="highlight">What We Do</h3>
+
+<p>We deal in a wide range of high-demand products including:</p>
+
+<ul class="list">
+<li>Industrial Machinery & Equipment</li>
+<li>Agricultural Tools & Agro Products</li>
+<li>Vehicles & Spare Parts</li>
+<li>Construction Materials & Hardware</li>
+<li>Electrical & Electronic Goods</li>
+<li>FMCG & Household Products</li>
+<li>Furniture & Interior Materials</li>
+<li>Food & Agricultural Commodities</li>
+</ul>
+
+<p>From sourcing to delivery, we ensure quality assurance, competitive pricing, and timely supply.</p>
+
+<br>
+
+<h3 class="highlight">Our Strength</h3>
+
+<p>At Mega Sewa Global Pvt. Ltd., we don’t just trade products —  
+we build strong partnerships, trusted networks, and sustainable growth opportunities.</p>
+
+<div class="strength-box">
+<div class="strength-item">✔ Global Sourcing Network</div>
+<div class="strength-item">✔ Reliable Logistics & Supply Chain</div>
+<div class="strength-item">✔ Transparent & Ethical Business Practice</div>
+<div class="strength-item">✔ Commitment to Quality</div>
+<div class="strength-item">✔ Customer-First Approach</div>
+</div>
+
+<br>
+
+<h3 class="highlight">Our Vision</h3>
+
+<p>To become one of Nepal’s most trusted and reliable global trading companies by setting new standards in service, quality, and integrity.</p>
+
+<br>
+
+<h3 class="highlight">Our Commitment</h3>
+
+<p>We are committed to delivering excellence in every transaction.</p>
+
+<div class="quote">“Right Product. Right Price. Right Time.”</div>
+
+<div class="footer-tag">
+Mega Sewa Global Pvt. Ltd. —  
+Connecting Possibilities. Delivering Excellence.
+</div>
+
+</div>
+</div>
+</section>
+
+
+{% endblock %}

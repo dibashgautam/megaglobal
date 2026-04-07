@@ -1,0 +1,365 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ seo_title|default:"Mega Sewa Global" }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="{% block meta_description %}{{ seo_description|default:'Mega Sewa Global provides machines, industrial products and trusted service in Nepal.' }}{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ canonical_url|default:request.build_absolute_uri }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ seo_title|default:'Mega Sewa Global' }}">
+    <meta property="og:description" content="{{ seo_description|default:'Mega Sewa Global provides machines and industrial products in Nepal.' }}">
+    <meta property="og:url" content="{{ canonical_url|default:request.build_absolute_uri }}">
+
+    {% if product and product.image %}
+    <meta property="og:image" content="{{ product.image.url }}">
+    {% endif %}
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ seo_title|default:'Mega Sewa Global' }}">
+    <meta name="twitter:description" content="{{ seo_description|default:'Mega Sewa Global provides machines and industrial products in Nepal.' }}">
+    {% if product and product.image %}
+    <meta name="twitter:image" content="{{ product.image.url }}">
+    {% endif %}
+
+    {% block extra_meta %}{% endblock %}
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- AOS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- ================= NAVBAR START ================= -->
+<nav class="navbar navbar-expand-lg mega-navbar">
+    <div class="container">
+
+        <!-- Desktop / Laptop Logo -->
+        <a class="navbar-brand d-none d-lg-flex" href="{% url 'home' %}" aria-label="Mega Sewa Global Home">
+            <img src="{% static 'images/logowhite.png' %}" class="logo-img" alt="Mega Sewa Global Logo">
+        </a>
+
+        <!-- Mobile / Tablet Logo (Click = Drawer Open) -->
+        <a class="navbar-brand d-flex d-lg-none"
+           data-bs-toggle="offcanvas"
+           href="#mobileDrawer"
+           role="button"
+           aria-controls="mobileDrawer"
+           aria-label="Open navigation menu">
+            <img src="{% static 'images/logowhite.png' %}" class="logo-img-mobile" alt="Mega Sewa Global Logo">
+        </a>
+
+        <!-- Mobile / Tablet Search -->
+        <div class="mobile-inline-search d-flex d-lg-none">
+            <div class="search-box w-100">
+                <input type="text" id="liveSearchMobile" placeholder="Search machine..." autocomplete="off" aria-label="Search products">
+            </div>
+            <div id="searchResultsMobile" class="search-dropdown"></div>
+        </div>
+
+       <!-- Desktop / Laptop Navbar -->
+<div class="navbar-collapse d-none d-lg-flex align-items-center">
+
+    <!-- CENTER -->
+    <div class="mx-auto text-center">
+
+        <!-- NAV -->
+        <ul class="navbar-nav mb-0 justify-content-center">
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active-link{% endif %}"
+                href="{% url 'home' %}">
+                Home
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'product_list' %}active-link{% endif %}"
+                href="{% url 'product_list' %}">
+                Machine
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'category_list' %}active-link{% endif %}"
+                href="{% url 'category_list' %}">
+                Categories
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active-link{% endif %}"
+                href="{% url 'about' %}">
+                About
+                </a>
+            </li>
+
+        </ul>
+
+        <!-- SEARCH -->
+        <div class="mega-search mt-2">
+            <div class="search-box">
+                <input type="text" placeholder="Search machine...">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="ms-auto">
+        <a href="https://wa.me/9779707798231" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> Contact
+        </a>
+    </div>
+
+</div>
+    </div>
+</nav>
+<!-- ================= NAVBAR END ================= -->
+
+<!-- Mobile Drawer -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileDrawer" aria-labelledby="mobileDrawerLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileDrawerLabel">Mega Sewa Global</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">Machine</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'category_list' %}">Categories</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+        </ul>
+    </div>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<!-- ================= FOOTER START ================= -->
+<footer class="mega-footer mt-5">
+    <div class="container py-5">
+        <div class="footer-card">
+            <div class="row g-5">
+
+                <!-- Logo -->
+                <div class="col-lg-4 col-md-6">
+                    <img src="{% static 'images/msg.png' %}" width="160" class="mb-3" alt="Mega Sewa Global">
+                    <p class="footer-text">
+                        Mega Sewa Global Pvt. Ltd provides quality products with trusted service
+                        and direct WhatsApp ordering system across Nepal.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'product_list' %}">Products</a></li>
+                        <li><a href="{% url 'category_list' %}">Categories</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-title">Categories</h5>
+                    <ul class="footer-links">
+                        {% for category in categories|slice:":5" %}
+                        <li>
+                            <a href="{% url 'category_detail' category.slug %}">
+                                {{ category.title }}
+                            </a>
+                        </li>
+                        {% empty %}
+                        <li><span class="footer-text">No categories available</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-title">Contact</h5>
+
+                    <p class="footer-text mb-2">
+                        <a href="#" onclick="handleContactClick(event)" style="text-decoration: none; color: inherit;">
+                            <i class="fa fa-phone me-2"></i> +977-9743667020
+                        </a>
+                    </p>
+
+                    <p class="footer-text mb-2">
+                        <a href="mailto:megasewaglobal@gmail.com?subject=Inquiry&body=Hello Mega Sewa Global," style="text-decoration: none; color: inherit;">
+                            <i class="fa fa-envelope me-2"></i> megasewaglobal@gmail.com
+                        </a>
+                    </p>
+
+                    <p class="footer-text">
+                        <a href="https://maps.app.goo.gl/ovRKSp5UTA2dHbE4A" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                            <i class="fa fa-map-marker-alt me-2"></i> Kathmandu, Nepal
+                        </a>
+                    </p>
+
+                    <div class="footer-social mt-3">
+                        <a href="https://www.facebook.com/Megasewaglobal" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@MSBusinessIdea-b8q" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@megasewaglobal" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom text-center py-3">
+        © 2026 Mega Sewa Global Pvt. Ltd | All Rights Reserved
+    </div>
+</footer>
+<!-- ================= FOOTER END ================= -->
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({
+        once: true,
+        duration: 700
+    });
+</script>
+
+<!-- Search -->
+<script>
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function setupLiveSearch(inputId, resultBoxId) {
+    var input = document.getElementById(inputId);
+    var resultsBox = document.getElementById(resultBoxId);
+
+    if (!input || !resultsBox) return;
+
+    var debounceTimer;
+
+    input.addEventListener("keyup", function () {
+        var query = this.value.trim();
+
+        clearTimeout(debounceTimer);
+
+        if (query.length <= 1) {
+            resultsBox.innerHTML = "";
+            resultsBox.style.display = "none";
+            return;
+        }
+
+        debounceTimer = setTimeout(function () {
+            fetch("/live-search/?q=" + encodeURIComponent(query))
+                .then(function (res) {
+                    if (!res.ok) {
+                        throw new Error("Search request failed");
+                    }
+                    return res.json();
+                })
+                .then(function (data) {
+                    resultsBox.innerHTML = "";
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(function (item) {
+                            var div = document.createElement("div");
+                            div.classList.add("search-item");
+
+                            var image = item.image ? item.image : "{% static 'images/no-image.png' %}";
+                            var title = escapeHtml(item.title);
+                            var price = escapeHtml(item.price);
+                            var slug = encodeURIComponent(item.slug);
+
+                            div.innerHTML =
+                                '<img src="' + image + '" alt="' + title + '">' +
+                                '<div>' +
+                                    '<strong>' + title + '</strong><br>' +
+                                    'Rs. ' + price +
+                                '</div>';
+
+                            div.addEventListener("click", function () {
+                                window.location.href = "/product/" + slug + "/";
+                            });
+
+                            resultsBox.appendChild(div);
+                        });
+
+                        resultsBox.style.display = "block";
+                    } else {
+                        resultsBox.style.display = "none";
+                    }
+                })
+                .catch(function () {
+                    resultsBox.innerHTML = "";
+                    resultsBox.style.display = "none";
+                });
+        }, 250);
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!input.contains(e.target) && !resultsBox.contains(e.target)) {
+            resultsBox.style.display = "none";
+        }
+    });
+
+    input.addEventListener("focus", function () {
+        if (resultsBox.innerHTML.trim() !== "") {
+            resultsBox.style.display = "block";
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    setupLiveSearch("liveSearchDesktop", "searchResultsDesktop");
+    setupLiveSearch("liveSearchMobile", "searchResultsMobile");
+});
+</script>
+
+<!-- Contact phone -->
+<script>
+function handleContactClick(event) {
+    event.preventDefault();
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        window.location.href = "tel:+9779743667020";
+    } else {
+        window.open("https://wa.me/9779743667020", "_blank", "noopener,noreferrer");
+    }
+}
+</script>
+
+</body>
+</html>

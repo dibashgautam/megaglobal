@@ -1,0 +1,426 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static log %}
+
+{% block extrastyle %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+{% get_admin_log 10 as admin_log for_user user %}
+
+<div class="admin-dashboard-wrapper">
+
+    <div class="dashboard-hero">
+        <div class="dashboard-hero-content">
+            <span class="dashboard-kicker">Admin Control Center</span>
+            <h2>Welcome to Mega Sewa Global Dashboard</h2>
+            <p>
+                Products, categories, sliders, site management र recent admin activities
+                सबै कुरा एउटै modern dashboard भित्र clean professional style मा manage गर्न मिल्ने गरी तयार गरिएको छ।
+            </p>
+        </div>
+
+        <div class="dashboard-hero-actions">
+            <a href="/admin/main/product/add/" class="hero-btn primary-btn">+ Add Product</a>
+            <a href="/admin/main/category/add/" class="hero-btn secondary-btn">+ Add Category</a>
+            <a href="/admin/main/slider/add/" class="hero-btn secondary-btn">+ Add Slider</a>
+            <a href="/" target="_blank" class="hero-btn dark-btn">Visit Website</a>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card stat-card-red">
+            <div class="stat-icon">01</div>
+            <div class="stat-info">
+                <div class="stat-number">{{ app_list|length }}</div>
+                <h3 class="stat-title">Total Applications</h3>
+                <p class="stat-desc">Admin panel भित्र available apps हरुको total overview।</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card-blue">
+            <div class="stat-icon">02</div>
+            <div class="stat-info">
+                <div class="stat-number">{{ admin_log|length }}</div>
+                <h3 class="stat-title">Recent Actions</h3>
+                <p class="stat-desc">हालसालै भएका add, change र delete गतिविधिहरु।</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card-green">
+            <div class="stat-icon">03</div>
+            <div class="stat-info">
+                <div class="stat-number">6</div>
+                <h3 class="stat-title">Main Shortcuts</h3>
+                <p class="stat-desc">Fast access section जसबाट core management खुल्छ।</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card-purple">
+            <div class="stat-icon">04</div>
+            <div class="stat-info">
+                <div class="stat-number">2</div>
+                <h3 class="stat-title">Live Charts</h3>
+                <p class="stat-desc">Dashboard insights लाई visual chart र graph मा देखाइन्छ।</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-main-grid">
+
+        <div class="dashboard-left">
+
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h3>Management Sections</h3>
+                    <span class="card-badge">Quick Access</span>
+                </div>
+
+                <div class="dashboard-shortcuts">
+                    <a href="/admin/main/product/" class="shortcut-card">
+                        <span class="shortcut-icon">PR</span>
+                        <span class="shortcut-content">
+                            <strong>Products</strong>
+                            <small>Products view, edit, publish र manage गर्नका लागि।</small>
+                        </span>
+                    </a>
+
+                    <a href="/admin/main/category/" class="shortcut-card">
+                        <span class="shortcut-icon">CT</span>
+                        <span class="shortcut-content">
+                            <strong>Categories</strong>
+                            <small>Machine वा product हरुलाई व्यवस्थित category मा राख्न।</small>
+                        </span>
+                    </a>
+
+                    <a href="/admin/main/slider/" class="shortcut-card">
+                        <span class="shortcut-icon">SL</span>
+                        <span class="shortcut-content">
+                            <strong>Sliders</strong>
+                            <small>Homepage banners र promotional sliders manage गर्न।</small>
+                        </span>
+                    </a>
+
+                    <a href="/admin/auth/user/" class="shortcut-card">
+                        <span class="shortcut-icon">US</span>
+                        <span class="shortcut-content">
+                            <strong>Users</strong>
+                            <small>Admin users, permissions र system access control।</small>
+                        </span>
+                    </a>
+
+                    <a href="/admin/auth/group/" class="shortcut-card">
+                        <span class="shortcut-icon">GR</span>
+                        <span class="shortcut-content">
+                            <strong>Groups</strong>
+                            <small>Role-based access र permission grouping setup।</small>
+                        </span>
+                    </a>
+
+                    <a href="/" target="_blank" class="shortcut-card">
+                        <span class="shortcut-icon">WB</span>
+                        <span class="shortcut-content">
+                            <strong>Website</strong>
+                            <small>Frontend site लाई direct check गर्न सजिलो पहुँच।</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h3>Quick Actions</h3>
+                    <span class="card-badge">Fast Workflow</span>
+                </div>
+
+                <div class="quick-action-grid">
+                    <a href="/admin/main/product/add/" class="quick-action-btn">Add New Product</a>
+                    <a href="/admin/main/category/add/" class="quick-action-btn">Add New Category</a>
+                    <a href="/admin/main/slider/add/" class="quick-action-btn">Add New Slider</a>
+                    <a href="/" target="_blank" class="quick-action-btn">Preview Website</a>
+                </div>
+
+                <div class="info-list">
+                    <div class="info-pill">
+                        <span class="info-pill-dot dot-red"></span>
+                        <div>
+                            <strong>Red Theme</strong>
+                            <small>Brand matched premium business styling</small>
+                        </div>
+                    </div>
+
+                    <div class="info-pill">
+                        <span class="info-pill-dot dot-blue"></span>
+                        <div>
+                            <strong>Responsive Layout</strong>
+                            <small>Desktop, tablet र mobile friendly UI</small>
+                        </div>
+                    </div>
+
+                    <div class="info-pill">
+                        <span class="info-pill-dot dot-green"></span>
+                        <div>
+                            <strong>Live Charts</strong>
+                            <small>Visual dashboard overview with data graphs</small>
+                        </div>
+                    </div>
+
+                    <div class="info-pill">
+                        <span class="info-pill-dot dot-purple"></span>
+                        <div>
+                            <strong>Modern Components</strong>
+                            <small>Cards, shadows, hierarchy and premium spacing</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h3>Analytics Overview</h3>
+                    <span class="card-badge">Charts & Graphs</span>
+                </div>
+
+                <div class="chart-grid">
+                    <div class="chart-box">
+                        <div class="chart-title">
+                            <h4>Application Models Bar Graph</h4>
+                            <span>Dynamic from app list</span>
+                        </div>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="adminBarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-box">
+                        <div class="chart-title">
+                            <h4>Dashboard Summary Chart</h4>
+                            <span>Live dashboard widgets</span>
+                        </div>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="adminDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h3>Applications</h3>
+                    <span class="card-badge">{{ app_list|length }} Apps</span>
+                </div>
+                <div id="content-main">
+                    {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-right">
+            <div class="dashboard-card recent-card">
+                <div class="dashboard-card-header">
+                    <h3>Recent Actions</h3>
+                    <span class="card-badge">{{ admin_log|length }} Logs</span>
+                </div>
+
+                {% if not admin_log %}
+                    <div class="empty-state">
+                        <p>No recent actions available right now.</p>
+                    </div>
+                {% else %}
+                    <ul class="modern-action-list">
+                        {% for entry in admin_log %}
+                            <li class="modern-action-item">
+                                <div class="action-badge {% if entry.is_addition %}add-action{% elif entry.is_change %}change-action{% elif entry.is_deletion %}delete-action{% else %}default-action{% endif %}">
+                                    {% if entry.is_addition %}
+                                        +
+                                    {% elif entry.is_change %}
+                                        ✎
+                                    {% elif entry.is_deletion %}
+                                        −
+                                    {% else %}
+                                        •
+                                    {% endif %}
+                                </div>
+
+                                <div class="action-content">
+                                    <div class="action-title">
+                                        {% if entry.is_deletion or not entry.get_admin_url %}
+                                            {{ entry.object_repr }}
+                                        {% else %}
+                                            <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="action-meta">
+                                        {{ entry.content_type.name|capfirst|default:"System item" }}
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script id="admin-app-labels" type="application/json">
+[
+{% for app in app_list %}
+    "{{ app.name|escapejs }}"{% if not forloop.last %},{% endif %}
+{% empty %}
+    "No Apps"
+{% endfor %}
+]
+</script>
+
+<script id="admin-app-counts" type="application/json">
+[
+{% for app in app_list %}
+    {{ app.models|length }}{% if not forloop.last %},{% endif %}
+{% empty %}
+    0
+{% endfor %}
+]
+</script>
+
+<script id="admin-log-count" type="application/json">{{ admin_log|length|default:0 }}</script>
+<script id="admin-total-apps" type="application/json">{{ app_list|length|default:0 }}</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const appLabels = JSON.parse(document.getElementById("admin-app-labels").textContent);
+    const appModelCounts = JSON.parse(document.getElementById("admin-app-counts").textContent);
+    const recentLogCount = JSON.parse(document.getElementById("admin-log-count").textContent);
+    const totalApps = JSON.parse(document.getElementById("admin-total-apps").textContent);
+
+    const totalShortcuts = 6;
+    const totalCharts = 2;
+
+    const barCtx = document.getElementById("adminBarChart");
+    if (barCtx) {
+        new Chart(barCtx, {
+            type: "bar",
+            data: {
+                labels: appLabels,
+                datasets: [{
+                    label: "Models Count",
+                    data: appModelCounts,
+                    backgroundColor: [
+                        "#dc2626",
+                        "#2563eb",
+                        "#10b981",
+                        "#8b5cf6",
+                        "#f59e0b",
+                        "#0ea5e9",
+                        "#ef4444",
+                        "#14b8a6"
+                    ],
+                    borderRadius: 10,
+                    borderSkipped: false,
+                    maxBarThickness: 52
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: "#0f172a",
+                        titleColor: "#ffffff",
+                        bodyColor: "#e5e7eb",
+                        padding: 12,
+                        cornerRadius: 10
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: "#475569",
+                            font: {
+                                weight: "700"
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0,
+                            color: "#475569",
+                            font: {
+                                weight: "700"
+                            }
+                        },
+                        grid: {
+                            color: "rgba(148,163,184,.18)"
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const doughnutCtx = document.getElementById("adminDoughnutChart");
+    if (doughnutCtx) {
+        new Chart(doughnutCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["Applications", "Recent Actions", "Shortcuts", "Charts"],
+                datasets: [{
+                    data: [
+                        totalApps,
+                        recentLogCount,
+                        totalShortcuts,
+                        totalCharts
+                    ],
+                    backgroundColor: [
+                        "#dc2626",
+                        "#2563eb",
+                        "#10b981",
+                        "#8b5cf6"
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "68%",
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            boxWidth: 12,
+                            boxHeight: 12,
+                            color: "#334155",
+                            usePointStyle: true,
+                            pointStyle: "circle",
+                            padding: 18,
+                            font: {
+                                weight: "700"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: "#0f172a",
+                        titleColor: "#ffffff",
+                        bodyColor: "#e5e7eb",
+                        padding: 12,
+                        cornerRadius: 10
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

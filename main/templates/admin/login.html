@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Mega Sewa Admin Login{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5" style="max-width:400px;">
+    <div class="card shadow p-4 rounded-4">
+
+        <div class="text-center mb-3">
+            <img src="{% static 'images/logowhite.png' %}" width="120">
+            <h4 class="mt-2">Admin Login</h4>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-danger w-100 mt-3">
+                Login
+            </button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

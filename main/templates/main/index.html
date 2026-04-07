@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | Mega Sewa Global{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+<!-- <link rel="stylesheet" href="{% static 'images/hero/' %}"> -->
+
+<!-- ================= HERO SLIDER START ================= -->
+ <section class="hero-section py-4">
+    <div class="container-fluid px-lg-5">
+
+        <div id="megaSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+            <!-- Slides -->
+            <div class="carousel-inner rounded-4 shadow overflow-hidden">
+
+                {% for slide in sliders %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+
+                    <!-- Image -->
+                    <div class="slider-image-wrapper">
+                        <img src="{{ slide.image.url }}" class="slider-img" alt="{{ slide.title }}">
+                    </div>
+
+                    <!-- Text Just Below Image -->
+                    <div class="slider-text text-center py-4">
+                        <h2>{{ slide.title }}</h2>
+                        <p>{{ slide.subtitle }}</p>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#megaSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#megaSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+
+        </div>
+
+    </div>
+</section>
+<!-- ================= HERO SLIDER END ================= -->
+
+
+
+
+
+
+<!-- ================= CATEGORY SECTION START ================= -->
+<section class="category-section py-5">
+    <div class="container">
+
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color: black;"><u>Shop by Category</u></h2>
+            <p class="text-muted" style="color: black;">Explore Our Product Categories</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            {% for category in categories %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+                <a href="{% url 'category_detail' category.slug %}" class="text-decoration-none">
+                    <div class="category-card">
+                        <img src="{{ category.image.url }}" alt="{{ category.title }}">
+                        <div class="category-overlay">
+                            <h5>{{ category.title }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+                <p>No categories available.</p>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+<!-- ================= CATEGORY SECTION END ================= -->
+
+
+
+
+<!-- ================= PRODUCT SECTION START ================= -->
+<!-- ================= PRODUCT SECTION START ================= -->
+<section class="product-section py-5">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+            <!-- <div class="product-header"> -->
+
+                {% if query %}
+                    <h2 class="section-title mb-0">
+                        Search Results for "{{ query }}"
+                    </h2>
+                {% else %}
+                    <h2 class="section-title mb-0">
+                        Featured Products
+                    </h2>
+
+                    <a href="{% url 'product_list' %}" class="view-all-btn">
+                        <i class="fa fa-arrow-right"></i>
+                        View All Machines
+                    </a>
+                {% endif %}
+
+            <!-- </div> -->
+
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            {% for product in products %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+                <div class="product-card w-100">
+
+                    <a href="{% url 'product_detail' product.slug %}" class="image-link">
+                        <div class="image-wrapper">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        </div>
+                    </a>
+
+                    <div class="product-info d-flex flex-column">
+
+                        <h6 class="product-title">
+                            <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none">
+                                {{ product.title }}
+                            </a>
+                        </h6>
+
+                        {% if product.discount_percent > 0 %}
+                            <p class="old-price mb-1">
+                                <del>Rs. {{ product.original_price }}</del>
+                            </p>
+                        {% endif %}
+
+                        <p class="product-price">
+                            Rs. {{ product.final_price }}
+                        </p>
+
+                        <div class="mt-auto pt-2">
+                            <a href="{% url 'product_detail' product.slug %}" class="product-btn">
+                                <i class="fa fa-eye me-2"></i> Watch Now
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="empty-product-box text-center">
+                        <h5 class="mb-2">No products found</h5>
+                        <p class="mb-0">Please try another search or check back later.</p>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+<!-- ================= PRODUCT SECTION END ================= -->
+<!-- ================= PRODUCT SECTION END ================= -->
+
+{% endblock %}
