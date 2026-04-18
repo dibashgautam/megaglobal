@@ -168,3 +168,9 @@ CKEDITOR_5_CONFIGS = {
         'toolbarSticky': True,
     }
 }
+
+
+
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
