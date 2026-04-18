@@ -1572,7 +1572,7 @@ body.change-form #content{
     border-radius:18px;
     border:1px solid #dbe3ee;
     box-shadow:0 10px 24px rgba(15,23,42,.08);
-    background:#fff;
+    background:#bb0010;
 }
 
 .admin-slider-preview-box img{
@@ -1593,7 +1593,7 @@ body.change-form #content{
     min-height:52px;
     padding:10px 16px;
     border-radius:14px;
-    background:#f8fafc;
+    background:#185a9c;
     border:1px dashed #cbd5e1;
     color:#64748b;
     font-size:13px;
@@ -1621,9 +1621,9 @@ body.change-form #content{
     gap:8px!important;
     padding:12px 16px!important;
     border-radius:14px!important;
-    background:linear-gradient(135deg,#f0fdf4,#ecfdf5)!important;
+    background:linear-gradient(135deg,#78ad5f,#1f573d)!important;
     border:1px solid #bbf7d0!important;
-    color:#15803d!important;
+    color:#b4a909!important;
     font-weight:900!important;
     text-decoration:none!important;
 }
