@@ -1,8 +1,6 @@
 from django.urls import path, reverse
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib.sitemaps.views import sitemap
 from django.contrib.sitemaps import Sitemap
+from django.contrib.sitemaps.views import sitemap
 
 from main.views import home_view, about, terms, robots_txt, admin_dashboard
 from main.views.product import product_list_view, product_detail_view, live_search_view
@@ -15,15 +13,13 @@ class ProductSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return Product.objects.all().order_by("-id")
+        return Product.objects.all().order_by("-updated_at")
 
     def location(self, obj):
         return reverse("product_detail", kwargs={"slug": obj.slug})
 
     def lastmod(self, obj):
-        if hasattr(obj, "updated_at"):
-            return obj.updated_at
-        return None
+        return obj.updated_at
 
 
 class CategorySitemap(Sitemap):
@@ -31,15 +27,13 @@ class CategorySitemap(Sitemap):
     priority = 0.7
 
     def items(self):
-        return Category.objects.all().order_by("-id")
+        return Category.objects.all().order_by("-updated_at")
 
     def location(self, obj):
         return reverse("category_detail", kwargs={"slug": obj.slug})
 
     def lastmod(self, obj):
-        if hasattr(obj, "updated_at"):
-            return obj.updated_at
-        return None
+        return obj.updated_at
 
 
 class StaticSitemap(Sitemap):
@@ -59,22 +53,21 @@ sitemaps = {
     "categories": CategorySitemap,
 }
 
-
 urlpatterns = [
     path("", home_view, name="home"),
     path("about/", about, name="about"),
     path("terms/", terms, name="terms"),
 
-    path("category/<slug:slug>/", category_detail_view, name="category_detail"),
     path("categories/", category_list_view, name="category_list"),
+    path("categories/<slug:slug>/", category_detail_view, name="category_detail"),
 
     path("products/", product_list_view, name="product_list"),
+    path("products/<slug:slug>/", product_detail_view, name="product_detail"),
+
     path("live-search/", live_search_view, name="live_search"),
-    path("product/<slug:slug>/", product_detail_view, name="product_detail"),
 
     path("dashboard/", admin_dashboard, name="dashboard"),
 
-    # SEO URLs
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

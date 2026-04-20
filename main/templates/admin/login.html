@@ -1,29 +1,55 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
+{% block bodyclass %}login{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
 {% block content %}
-<div id="content-main">
-  {% if form.errors %}
-    <p class="errornote">
-      Please enter the correct username and password for a staff account.
-    </p>
-  {% endif %}
+<div class="msg-admin-login-page">
+    <div class="msg-login-card">
+        <div class="msg-login-left">
+            <div class="msg-login-overlay">
+                <img src="{% static 'admin/images/logo.png' %}" alt="Logo" class="msg-login-logo">
+                <h2>Mega Sewa Global Admin</h2>
+                <p>Manage products, categories, sliders, and machine listings from one clean dashboard.</p>
+                <ul class="msg-login-features">
+                    <li>Product Management</li>
+                    <li>Category Control</li>
+                    <li>Slider Management</li>
+                    <li>SEO Content Updates</li>
+                </ul>
+            </div>
+        </div>
 
-  <form action="{{ app_path }}" method="post" id="login-form">
-    {% csrf_token %}
+        <div class="msg-login-right">
+            <div class="msg-login-form-wrap">
+                <h1>Admin Login</h1>
+                <p class="msg-login-text">Please sign in to continue</p>
 
-    <div>
-      {{ form.username.label_tag }} {{ form.username }}
+                {% if form.errors %}
+                    <div class="errornote">Invalid username or password.</div>
+                {% endif %}
+
+                <form action="{{ app_path }}" method="post">
+                    {% csrf_token %}
+
+                    <div class="msg-form-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="msg-form-group">
+                        <label for="{{ form.password.id_for_label }}">Password</label>
+                        {{ form.password }}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+
+                    <div class="submit-row">
+                        <input type="submit" value="Log in" class="msg-login-btn">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div>
-      {{ form.password.label_tag }} {{ form.password }}
-      <input type="hidden" name="next" value="{{ next }}">
-    </div>
-
-    <div class="submit-row">
-      <input type="submit" value="Log in">
-    </div>
-  </form>
 </div>
 {% endblock %}

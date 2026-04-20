@@ -1,38 +1,55 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.utils.safestring import mark_safe
+
 from .models import Category, Product, ProductImage, Slider
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("image_tag", "title", "slug")
-    prepopulated_fields = {"slug": ("title",)}
+    list_display = ("image_tag", "title", "slug", "updated_at")
     search_fields = ("title",)
-
-    readonly_fields = ("image_preview",)
+    readonly_fields = ("slug", "image_preview")
 
     fields = (
         "title",
         "slug",
         "image",
         "image_preview",
+        "description",
     )
 
+    class Media:
+        js = ("js/admin_image_preview.js",)
+
     def image_preview(self, obj):
-        if obj and obj.pk and obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                '<img src="{}" style="width:120px;height:120px;object-fit:cover;border-radius:12px;border:1px solid #ddd;box-shadow:0 4px 12px rgba(0,0,0,0.08);" />',
+                '<div class="admin-main-preview-box">'
+                '<img src="{}" id="category-image-preview" alt="Category Preview" '
+                'style="display:block;max-width:260px;max-height:260px;object-fit:cover;'
+                'border-radius:12px;border:1px solid #ddd;">'
+                '</div>',
                 obj.image.url
             )
-        return "No Image Preview"
+
+        return format_html(
+            '<div class="admin-main-preview-box">'
+            '<img src="{}" id="category-image-preview" alt="Category Preview" '
+            'style="display:none;max-width:260px;max-height:260px;object-fit:cover;'
+            'border-radius:12px;border:1px solid #ddd;">'
+            '<span id="category-image-placeholder" class="preview-placeholder">{}</span>'
+            '</div>',
+            "",
+            "No Image Preview"
+        )
 
     image_preview.short_description = "Preview"
 
     def image_tag(self, obj):
-        if obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                '<img src="{}" style="width:50px;height:50px;object-fit:cover;border-radius:10px;border:1px solid #ddd;" />',
+                '<img src="{}" style="width:50px;height:50px;object-fit:cover;'
+                'border-radius:10px;border:1px solid #ddd;" />',
                 obj.image.url
             )
         return "No Image"
@@ -53,22 +70,24 @@ class ProductImageInline(admin.StackedInline):
         js = ("js/admin_image_preview.js",)
 
     def image_preview(self, obj):
-        if obj and obj.pk and obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                """
-                <div class="admin-inline-preview-box">
-                    <img src="{}" class="admin-live-preview inline-image-preview" alt="Preview">
-                </div>
-                """,
+                '<div class="admin-inline-preview-box">'
+                '<img src="{}" class="admin-live-preview inline-image-preview" '
+                'alt="Preview" style="max-width:220px;max-height:220px;'
+                'object-fit:cover;border-radius:12px;border:1px solid #ddd;">'
+                '</div>',
                 obj.image.url
             )
-        return mark_safe(
-            """
-            <div class="admin-inline-preview-box">
-                <img src="" class="admin-live-preview inline-image-preview" alt="Preview" style="display:none;">
-                <span class="preview-placeholder">No Preview</span>
-            </div>
-            """
+        return format_html(
+            '<div class="admin-inline-preview-box">'
+            '<img src="{}" class="admin-live-preview inline-image-preview" alt="Preview" '
+            'style="display:none;max-width:220px;max-height:220px;object-fit:cover;'
+            'border-radius:12px;border:1px solid #ddd;">'
+            '<span class="preview-placeholder">{}</span>'
+            '</div>',
+            "",
+            "No Preview"
         )
 
     image_preview.short_description = "Preview"
@@ -84,11 +103,12 @@ class ProductAdmin(admin.ModelAdmin):
         "discount_percent",
         "final_price",
         "created_at",
+        "updated_at",
     )
-    list_filter = ("category",)
-    search_fields = ("title",)
-    prepopulated_fields = {"slug": ("title",)}
-    readonly_fields = ("main_image_preview", "final_price")
+    list_filter = ("category", "created_at", "updated_at")
+    search_fields = ("title", "description", "meta_title", "meta_description")
+    list_select_related = ("category",)
+    readonly_fields = ("slug", "main_image_preview", "final_price", "created_at", "updated_at")
 
     fields = (
         "title",
@@ -98,8 +118,12 @@ class ProductAdmin(admin.ModelAdmin):
         "main_image_preview",
         "original_price",
         "discount_percent",
-        "description",
         "final_price",
+        "description",
+        "meta_title",
+        "meta_description",
+        "created_at",
+        "updated_at",
     )
 
     inlines = [ProductImageInline]
@@ -108,30 +132,33 @@ class ProductAdmin(admin.ModelAdmin):
         js = ("js/admin_image_preview.js",)
 
     def main_image_preview(self, obj):
-        if obj and obj.pk and obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                """
-                <div class="admin-main-preview-box">
-                    <img src="{}" id="main-image-preview" alt="Main Preview">
-                </div>
-                """,
+                '<div class="admin-main-preview-box">'
+                '<img src="{}" id="main-image-preview" alt="Main Preview" '
+                'style="max-width:260px;max-height:260px;object-fit:cover;'
+                'border-radius:12px;border:1px solid #ddd;">'
+                '</div>',
                 obj.image.url
             )
-        return mark_safe(
-            """
-            <div class="admin-main-preview-box">
-                <img src="" id="main-image-preview" alt="Main Preview" style="display:none;">
-                <span id="main-image-placeholder" class="preview-placeholder">No Image Preview</span>
-            </div>
-            """
+        return format_html(
+            '<div class="admin-main-preview-box">'
+            '<img src="{}" id="main-image-preview" alt="Main Preview" '
+            'style="display:none;max-width:260px;max-height:260px;object-fit:cover;'
+            'border-radius:12px;border:1px solid #ddd;">'
+            '<span id="main-image-placeholder" class="preview-placeholder">{}</span>'
+            '</div>',
+            "",
+            "No Image Preview"
         )
 
     main_image_preview.short_description = "Main Image Preview"
 
     def image_tag(self, obj):
-        if obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                '<img src="{}" style="width:55px;height:55px;object-fit:cover;border-radius:10px;border:1px solid #ddd;" />',
+                '<img src="{}" style="width:55px;height:55px;object-fit:cover;'
+                'border-radius:10px;border:1px solid #ddd;" />',
                 obj.image.url
             )
         return "No Image"
@@ -141,38 +168,43 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Slider)
 class SliderAdmin(admin.ModelAdmin):
-    list_display = ("slider_image_preview", "title", "order", "is_active")
+    list_display = ("slider_image_preview", "title", "order", "is_active", "created_at")
     list_editable = ("order", "is_active")
-    readonly_fields = ("slider_image_preview",)
+    search_fields = ("title", "subtitle")
+    readonly_fields = ("slider_image_preview", "created_at")
 
     fields = (
         "title",
-        "slider_image_preview",
+        "subtitle",
         "image",
+        "slider_image_preview",
         "order",
         "is_active",
+        "created_at",
     )
 
     class Media:
         js = ("js/admin_image_preview.js",)
 
     def slider_image_preview(self, obj):
-        if obj and obj.pk and obj.image:
+        if obj and obj.image and hasattr(obj.image, "url"):
             return format_html(
-                """
-                <div class="admin-slider-preview-box">
-                    <img src="{}" id="slider-image-preview" alt="Slider Preview">
-                </div>
-                """,
+                '<div class="admin-slider-preview-box">'
+                '<img src="{}" id="slider-image-preview" alt="Slider Preview" '
+                'style="max-width:260px;max-height:180px;object-fit:cover;'
+                'border-radius:12px;border:1px solid #ddd;">'
+                '</div>',
                 obj.image.url
             )
-        return mark_safe(
-            """
-            <div class="admin-slider-preview-box">
-                <img src="" id="slider-image-preview" alt="Slider Preview" style="display:none;">
-                <span id="slider-image-placeholder" class="preview-placeholder">No Image Preview</span>
-            </div>
-            """
+        return format_html(
+            '<div class="admin-slider-preview-box">'
+            '<img src="{}" id="slider-image-preview" alt="Slider Preview" '
+            'style="display:none;max-width:260px;max-height:180px;object-fit:cover;'
+            'border-radius:12px;border:1px solid #ddd;">'
+            '<span id="slider-image-placeholder" class="preview-placeholder">{}</span>'
+            '</div>',
+            "",
+            "No Image Preview"
         )
 
     slider_image_preview.short_description = "Slider Preview"

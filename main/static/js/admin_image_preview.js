@@ -6,9 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!input || !img) return;
 
+        if (input.dataset.previewBound === "true") return;
+        input.dataset.previewBound = "true";
+
         input.addEventListener("change", function () {
             const file = this.files && this.files[0];
-            if (!file) return;
+
+            if (!file) {
+                img.src = "";
+                img.style.display = "none";
+                if (placeholder) placeholder.style.display = "inline-flex";
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -29,10 +38,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const placeholder = row.querySelector(".preview-placeholder");
 
             if (!fileInput || !previewImg) return;
+            if (fileInput.dataset.previewBound === "true") return;
+
+            fileInput.dataset.previewBound = "true";
 
             fileInput.addEventListener("change", function () {
                 const file = this.files && this.files[0];
-                if (!file) return;
+
+                if (!file) {
+                    previewImg.src = "";
+                    previewImg.style.display = "none";
+                    if (placeholder) placeholder.style.display = "inline-flex";
+                    return;
+                }
 
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -45,8 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    setupMainPreview('#id_image', '#main-image-preview', '#main-image-placeholder');
-    setupMainPreview('#id_image', '#slider-image-preview', '#slider-image-placeholder');
+    setupMainPreview("#id_image", "#main-image-preview", "#main-image-placeholder");
+    setupMainPreview("#id_image", "#slider-image-preview", "#slider-image-placeholder");
+    setupMainPreview("#id_image", "#category-image-preview", "#category-image-placeholder");
+
     setupInlinePreviews();
 
     document.body.addEventListener("click", function () {

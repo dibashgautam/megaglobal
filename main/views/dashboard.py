@@ -1,54 +1,47 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.db.models import Count
-from django.utils import timezone
-from datetime import timedelta
 
-from main.models import Category, Product, Slider
+from main.models import Product, Category, Visitor
 
 
 @staff_member_required
 def admin_dashboard(request):
-    total_categories = Category.objects.count()
     total_products = Product.objects.count()
-    total_sliders = Slider.objects.count()
-    active_sliders = Slider.objects.filter(is_active=True).count()
+    total_categories = Category.objects.count()
+    total_visitors = Visitor.objects.count()
+    guest_visitors = Visitor.objects.filter(is_guest=True).count()
 
-    recent_products = Product.objects.select_related("category").order_by("-created_at")[:5]
-    recent_categories = Category.objects.order_by("-id")[:5]
+    categories = Category.objects.annotate(product_count=Count("products"))
 
-    # last 6 months product counts
-    today = timezone.now()
-    labels = []
-    data = []
+    category_data = []
+    category_labels = []
+    category_counts = []
 
-    for i in range(5, -1, -1):
-        month_date = today - timedelta(days=30 * i)
-        month_label = month_date.strftime("%b %Y")
-        month_products = Product.objects.filter(
-            created_at__year=month_date.year,
-            created_at__month=month_date.month
-        ).count()
+    for category in categories:
+        count = category.product_count
+        percent = round((count / total_products) * 100, 2) if total_products else 0
 
-        labels.append(month_label)
-        data.append(month_products)
+        category_data.append({
+            "name": category.title,
+            "count": count,
+            "percent": percent,
+        })
 
-    # category wise product count
-    category_data = Category.objects.annotate(product_count=Count("products")).values("title", "product_count")
+        category_labels.append(category.title)
+        category_counts.append(count)
 
-    category_labels = [item["title"] for item in category_data]
-    category_counts = [item["product_count"] for item in category_data]
+    top_viewed_machines = Product.objects.order_by("-view_count")[:10]
 
     context = {
-        "total_categories": total_categories,
         "total_products": total_products,
-        "total_sliders": total_sliders,
-        "active_sliders": active_sliders,
-        "recent_products": recent_products,
-        "recent_categories": recent_categories,
-        "monthly_labels": labels,
-        "monthly_data": data,
+        "total_categories": total_categories,
+        "total_visitors": total_visitors,
+        "guest_visitors": guest_visitors,
+        "category_data": category_data,
         "category_labels": category_labels,
         "category_counts": category_counts,
+        "top_viewed_machines": top_viewed_machines,
     }
-    return render(request, "dashboard.html", context)
+
+    return render(request, "admin/custom_dashboard.html", context)

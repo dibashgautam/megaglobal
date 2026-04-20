@@ -1,29 +1,43 @@
-{% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% extends "admin/base.html" %}
+{% load static %}
 
-{% block content %}
-<div id="content-main">
-  {% if form.errors %}
-    <p class="errornote">
-      Please enter the correct username and password for a staff account.
-    </p>
-  {% endif %}
+{% block title %}Mega Sewa Global Admin{% endblock %}
 
-  <form action="{{ app_path }}" method="post" id="login-form">
-    {% csrf_token %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
 
-    <div>
-      {{ form.username.label_tag }} {{ form.username }}
+{% block branding %}
+<div class="msg-admin-topbar">
+    <div class="msg-admin-brand">
+        <div class="msg-admin-logo-box">
+            <img src="{% static 'images/msg.png' %}" alt="Mega Sewa Global Logo" class="msg-admin-logo">
+        </div>
+
+        <div class="msg-admin-brand-text">
+            <h1 id="site-name">
+                <a href="{% url 'admin:index' %}">Mega Sewa Global Admin</a>
+            </h1>
+            <p>Smart machine management dashboard</p>
+        </div>
     </div>
-
-    <div>
-      {{ form.password.label_tag }} {{ form.password }}
-      <input type="hidden" name="next" value="{{ next }}">
-    </div>
-
-    <div class="submit-row">
-      <input type="submit" value="Log in">
-    </div>
-  </form>
 </div>
 {% endblock %}
+
+{% block usertools %}
+{% if has_permission %}
+<div id="user-tools">
+    <span>Welcome, {{ user.get_username }}</span>
+    {% if site_url %}
+        <a href="{{ site_url }}">View Site</a>
+    {% endif %}
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">Change Password</a>
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">Log out</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

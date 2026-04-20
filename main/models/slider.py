@@ -1,5 +1,3 @@
-# main/models/slider.py
-
 from django.db import models
 
 

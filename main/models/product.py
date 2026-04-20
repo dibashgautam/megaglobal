@@ -1,27 +1,48 @@
+from decimal import Decimal
+
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django_ckeditor_5.fields import CKEditor5Field
+
 from .category import Category
 
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=270, unique=True, blank=True)
+
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name="products"
     )
 
-    # Main / Featured Image (Required)
     image = models.ImageField(upload_to="products/featured/")
 
-    original_price = models.DecimalField(max_digits=10, decimal_places=2)
-    discount_percent = models.PositiveIntegerField(default=0)
-    final_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    original_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))]
+    )
+    discount_percent = models.PositiveIntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+    final_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        editable=False
+    )
 
     description = CKEditor5Field("Description", config_name="default")
+
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+
+    view_count = models.PositiveIntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,10 +52,16 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title)
+            slug = base_slug
+            counter = 1
+            while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
 
         if self.discount_percent > 0:
-            discount_amount = (self.original_price * self.discount_percent) / 100
+            discount_amount = (self.original_price * Decimal(self.discount_percent)) / Decimal("100")
             self.final_price = self.original_price - discount_amount
         else:
             self.final_price = self.original_price
@@ -48,7 +75,6 @@ class Product(models.Model):
         return self.title
 
 
-# 🔥 Multiple Gallery Images Model
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product,

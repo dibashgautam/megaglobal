@@ -1,29 +1,238 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
 {% block content %}
-<div id="content-main">
-  {% if form.errors %}
-    <p class="errornote">
-      Please enter the correct username and password for a staff account.
-    </p>
-  {% endif %}
+<div class="admin-dashboard-wrapper">
 
-  <form action="{{ app_path }}" method="post" id="login-form">
-    {% csrf_token %}
+    <section class="dashboard-hero">
+        <div class="dashboard-hero-content">
+            <span class="dashboard-kicker">Mega Sewa Global</span>
+            <h2>Welcome to your modern admin dashboard</h2>
+            <p>
+                Manage products, categories, visitors, and performance insights
+                from one clean and responsive dashboard.
+            </p>
+        </div>
 
-    <div>
-      {{ form.username.label_tag }} {{ form.username }}
-    </div>
+        <div class="dashboard-hero-actions">
+            <a href="{% url 'admin:main_product_add' %}" class="hero-btn primary-btn">+ Add Product</a>
+            <a href="{% url 'admin:main_category_add' %}" class="hero-btn secondary-btn">+ Add Category</a>
+            <a href="{% url 'admin:main_slider_add' %}" class="hero-btn dark-btn">+ Add Slider</a>
+        </div>
+    </section>
 
-    <div>
-      {{ form.password.label_tag }} {{ form.password }}
-      <input type="hidden" name="next" value="{{ next }}">
-    </div>
+    <section class="stats-grid">
+        <div class="stat-card stat-card-red">
+            <div class="stat-icon">P</div>
+            <div class="stat-info">
+                <span class="stat-number">{{ total_products }}</span>
+                <h3 class="stat-title">Total Products</h3>
+                <p class="stat-desc">All listed machine products.</p>
+            </div>
+        </div>
 
-    <div class="submit-row">
-      <input type="submit" value="Log in">
-    </div>
-  </form>
+        <div class="stat-card stat-card-blue">
+            <div class="stat-icon">C</div>
+            <div class="stat-info">
+                <span class="stat-number">{{ total_categories }}</span>
+                <h3 class="stat-title">Categories</h3>
+                <p class="stat-desc">Active machine categories.</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card-green">
+            <div class="stat-icon">V</div>
+            <div class="stat-info">
+                <span class="stat-number">{{ total_visitors }}</span>
+                <h3 class="stat-title">Visitors</h3>
+                <p class="stat-desc">Tracked guest/user visitors.</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card-purple">
+            <div class="stat-icon">G</div>
+            <div class="stat-info">
+                <span class="stat-number">{{ guest_visitors }}</span>
+                <h3 class="stat-title">Guest Visits</h3>
+                <p class="stat-desc">Auto guest sessions without login.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="analytics-grid">
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>Category Wise Product Distribution</h3>
+                <span class="card-badge">Percentage</span>
+            </div>
+
+            <div class="chart-box">
+                <canvas id="categoryChart"></canvas>
+            </div>
+
+            <div class="category-summary-table">
+                {% for item in category_data %}
+                <div class="category-row">
+                    <span>{{ item.name }}</span>
+                    <strong>{{ item.count }} items ({{ item.percent }}%)</strong>
+                </div>
+                {% empty %}
+                <div class="empty-state">No category data available.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="dashboard-card-header">
+                <h3>Top 10 Most Viewed Machines</h3>
+                <span class="card-badge">Visitors</span>
+            </div>
+
+            <div class="top-machine-list">
+                {% for machine in top_viewed_machines %}
+                <div class="top-machine-item">
+                    <div>
+                        <div class="top-machine-title">{{ machine.name }}</div>
+                        <div class="top-machine-meta">
+                            Category:
+                            {% if machine.category %}
+                                {{ machine.category.name }}
+                            {% else %}
+                                Uncategorized
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="view-badge">{{ machine.view_count }} views</div>
+                </div>
+                {% empty %}
+                <div class="empty-state">No machine views tracked yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-main-grid">
+        <div>
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h3>Quick Shortcuts</h3>
+                    <span class="card-badge">Fast Access</span>
+                </div>
+
+                <div class="dashboard-shortcuts">
+                    <a href="{% url 'admin:main_product_changelist' %}" class="shortcut-card">
+                        <div class="shortcut-icon">P</div>
+                        <div class="shortcut-content">
+                            <strong>Manage Products</strong>
+                            <small>View, edit and organize all machine products.</small>
+                        </div>
+                    </a>
+
+                    <a href="{% url 'admin:main_category_changelist' %}" class="shortcut-card">
+                        <div class="shortcut-icon">C</div>
+                        <div class="shortcut-content">
+                            <strong>Manage Categories</strong>
+                            <small>Control all machine and product categories.</small>
+                        </div>
+                    </a>
+
+                    <a href="{% url 'admin:main_slider_changelist' %}" class="shortcut-card">
+                        <div class="shortcut-icon">S</div>
+                        <div class="shortcut-content">
+                            <strong>Homepage Sliders</strong>
+                            <small>Update banners and homepage slider content.</small>
+                        </div>
+                    </a>
+
+                    <a href="{% url 'admin:auth_user_changelist' %}" class="shortcut-card">
+                        <div class="shortcut-icon">U</div>
+                        <div class="shortcut-content">
+                            <strong>Admin Users</strong>
+                            <small>Manage staff access and permissions.</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="dashboard-card recent-card">
+                <div class="dashboard-card-header">
+                    <h3>Recent Actions</h3>
+                    <span class="card-badge">Activity</span>
+                </div>
+
+                {% load log %}
+                {% get_admin_log 8 as admin_log for_user user %}
+
+                {% if admin_log %}
+                    <ul class="modern-action-list">
+                        {% for entry in admin_log %}
+                            <li class="modern-action-item">
+                                <div class="action-badge
+                                    {% if entry.is_addition %}add-action
+                                    {% elif entry.is_change %}change-action
+                                    {% elif entry.is_deletion %}delete-action
+                                    {% else %}default-action{% endif %}">
+                                    {% if entry.is_addition %}+{% elif entry.is_change %}~{% elif entry.is_deletion %}-{% else %}•{% endif %}
+                                </div>
+
+                                <div class="action-content">
+                                    <div class="action-title">
+                                        {% if entry.get_admin_url %}
+                                            <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                                        {% else %}
+                                            {{ entry.object_repr }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="action-meta">
+                                        {{ entry.content_type }} • {{ entry.action_time }}
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">No recent actions available yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
 </div>
+
+{{ category_labels|json_script:"category-labels" }}
+{{ category_counts|json_script:"category-counts" }}
+
+<script>
+    const categoryLabels = JSON.parse(document.getElementById("category-labels").textContent);
+    const categoryCounts = JSON.parse(document.getElementById("category-counts").textContent);
+
+    const ctx = document.getElementById("categoryChart");
+    if (ctx) {
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryCounts,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}
