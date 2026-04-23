@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.utils.html import strip_tags
 
-from main.models import Product, Visitor
+from main.models import Product, Visitor, Lead
 
 
 def get_client_ip(request):
@@ -37,6 +37,11 @@ def product_detail_view(request, slug):
 
     session_key = request.session.session_key
 
+    lead = None
+    lead_id = request.session.get("lead_id")
+    if lead_id:
+        lead = Lead.objects.filter(lead_id=lead_id).first()
+
     already_counted = Visitor.objects.filter(
         session_key=session_key,
         product=product
@@ -48,6 +53,7 @@ def product_detail_view(request, slug):
 
         Visitor.objects.create(
             session_key=session_key,
+            lead=lead,
             user=request.user if request.user.is_authenticated else None,
             product=product,
             is_guest=not request.user.is_authenticated,

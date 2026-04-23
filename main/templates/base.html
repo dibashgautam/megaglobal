@@ -26,6 +26,13 @@
     <meta name="twitter:image" content="{{ product.image.url }}">
     {% endif %}
 
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/hero/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/hero/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/hero/favicon-16x16.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/hero/apple-touch-icon.png' %}">
+
     {% block extra_meta %}{% endblock %}
 
     <!-- Bootstrap -->

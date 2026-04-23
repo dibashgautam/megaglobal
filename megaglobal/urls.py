@@ -2,13 +2,14 @@
 URL configuration for megaglobal project.
 """
 
-from django.contrib import admin
+# from django.contrib import admin
+from main.admin_site import admin_site
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin/", admin_site.urls),
     path("", include("main.urls")),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
 ]

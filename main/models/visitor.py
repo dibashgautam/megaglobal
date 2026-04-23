@@ -4,6 +4,13 @@ from django.conf import settings
 
 class Visitor(models.Model):
     session_key = models.CharField(max_length=120, blank=True, null=True)
+    lead = models.ForeignKey(
+        "main.Lead",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="visits"
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -26,4 +33,4 @@ class Visitor(models.Model):
         ordering = ["-visited_at"]
 
     def __str__(self):
-        return f"{self.product} - {'Guest' if self.is_guest else 'User'}"
+        return f"{self.product} - {self.lead or 'Anonymous'}"

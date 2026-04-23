@@ -31,7 +31,8 @@ def admin_dashboard(request):
         category_labels.append(category.title)
         category_counts.append(count)
 
-    top_viewed_machines = Product.objects.order_by("-view_count")[:10]
+    # item_type बिना top viewed products
+    top_viewed_machines = Product.objects.select_related("category").order_by("-view_count")[:10]
 
     context = {
         "total_products": total_products,
@@ -44,4 +45,4 @@ def admin_dashboard(request):
         "top_viewed_machines": top_viewed_machines,
     }
 
-    return render(request, "admin/custom_dashboard.html", context)
+    return render(request, "admin/base_site.html", context)

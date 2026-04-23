@@ -6,6 +6,7 @@ from main.views import home_view, about, terms, robots_txt, admin_dashboard
 from main.views.product import product_list_view, product_detail_view, live_search_view
 from main.views.category import category_list_view, category_detail_view
 from main.models import Product, Category
+from main.views.lead import save_lead
 
 
 class ProductSitemap(Sitemap):
@@ -54,6 +55,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path("save-lead/", save_lead, name="save_lead"),
     path("", home_view, name="home"),
     path("about/", about, name="about"),
     path("terms/", terms, name="terms"),
@@ -66,7 +68,7 @@ urlpatterns = [
 
     path("live-search/", live_search_view, name="live_search"),
 
-    path("dashboard/", admin_dashboard, name="dashboard"),
+    # path("dashboard/", admin_dashboard, name="dashboard"),
 
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),

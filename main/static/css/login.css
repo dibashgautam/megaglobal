@@ -1,0 +1,228 @@
+body.login {
+    background: linear-gradient(135deg, #fff1f2 0%, #f8fafc 50%, #ffffff 100%) !important;
+}
+
+.login #nav-sidebar,
+.login div.breadcrumbs {
+    display: none !important;
+}
+
+.login #content {
+    padding: 0 !important;
+}
+
+.login #content-main {
+    width: 100% !important;
+    float: none !important;
+}
+
+.msg-admin-login-page {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.msg-login-card {
+    width: 100%;
+    max-width: 1120px;
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #fff;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+}
+
+.msg-login-left {
+    background: linear-gradient(135deg, #991224, #c8102e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.msg-login-overlay {
+    width: 100%;
+    max-width: 500px;
+    padding: 52px;
+    color: #fff;
+}
+
+.msg-login-logo {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    background: #fff;
+    padding: 8px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+}
+
+.msg-login-left h2 {
+    margin: 0 0 16px;
+    font-size: 38px;
+    line-height: 1.2;
+    color: #fff;
+}
+
+.msg-login-left p {
+    margin: 0 0 24px;
+    line-height: 1.8;
+    font-size: 15px;
+    color: rgba(255,255,255,.92);
+}
+
+.msg-login-features {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.msg-login-features li {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.msg-login-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #fff;
+}
+
+.msg-login-form-wrap {
+    width: 100%;
+    max-width: 400px;
+}
+
+.msg-login-form-wrap h1 {
+    margin: 0 0 8px;
+    font-size: 34px;
+    color: #111827;
+}
+
+.msg-login-text {
+    margin: 0 0 24px;
+    color: #6b7280;
+}
+
+.msg-form-group {
+    margin-bottom: 18px;
+}
+
+.msg-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.msg-form-group input:not([type="hidden"]) {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 14px !important;
+    padding: 0 14px !important;
+    box-sizing: border-box;
+    color: #111827 !important;
+    background-color: #ffffff !important;
+    -webkit-text-fill-color: #111827 !important;
+}
+
+.msg-form-group input::placeholder {
+    color: #9ca3af !important;
+}
+
+.msg-form-group input:focus {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 4px rgba(239,68,68,.10);
+    outline: none;
+}
+
+.msg-form-group input:-webkit-autofill,
+.msg-form-group input:-webkit-autofill:hover,
+.msg-form-group input:-webkit-autofill:focus,
+.msg-form-group input:-webkit-autofill:active {
+    -webkit-text-fill-color: #111827 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px !important;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 16px;
+    z-index: 5;
+}
+
+.toggle-password:hover {
+    color: #c8102e;
+}
+
+.login .submit-row {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-top: 10px !important;
+}
+
+.msg-login-btn {
+    width: 100%;
+    height: 52px;
+    border: none !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #991224, #c8102e) !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    cursor: pointer;
+}
+
+@media (max-width: 992px) {
+    .msg-login-card {
+        grid-template-columns: 1fr;
+    }
+
+    .msg-login-left {
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .msg-admin-login-page {
+        padding: 16px;
+    }
+
+    .msg-login-overlay {
+        padding: 22px;
+    }
+
+    .msg-login-right {
+        padding: 22px 16px;
+    }
+
+    .msg-login-left h2 {
+        font-size: 28px;
+    }
+
+    .msg-login-form-wrap h1 {
+        font-size: 28px;
+    }
+}

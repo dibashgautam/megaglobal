@@ -97,11 +97,11 @@
                 {% for machine in top_viewed_machines %}
                 <div class="top-machine-item">
                     <div>
-                        <div class="top-machine-title">{{ machine.name }}</div>
+                        <div class="top-machine-title">{{ machine.title }}</div>
                         <div class="top-machine-meta">
                             Category:
                             {% if machine.category %}
-                                {{ machine.category.name }}
+                                {{ machine.category.title }}
                             {% else %}
                                 Uncategorized
                             {% endif %}
@@ -146,14 +146,6 @@
                         <div class="shortcut-content">
                             <strong>Homepage Sliders</strong>
                             <small>Update banners and homepage slider content.</small>
-                        </div>
-                    </a>
-
-                    <a href="{% url 'admin:auth_user_changelist' %}" class="shortcut-card">
-                        <div class="shortcut-icon">U</div>
-                        <div class="shortcut-content">
-                            <strong>Admin Users</strong>
-                            <small>Manage staff access and permissions.</small>
                         </div>
                     </a>
                 </div>

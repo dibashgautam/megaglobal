@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from .models import Category, Product, ProductImage, Slider
+from .admin_site import admin_site
 
 
-@admin.register(Category)
+@admin.register(Category, site=admin_site)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("image_tag", "title", "slug", "updated_at")
     search_fields = ("title",)
@@ -59,7 +60,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ProductImageInline(admin.StackedInline):
     model = ProductImage
-    extra = 1
+    extra = 0
     min_num = 0
     fields = ("image", "image_preview")
     readonly_fields = ("image_preview",)
@@ -93,12 +94,13 @@ class ProductImageInline(admin.StackedInline):
     image_preview.short_description = "Preview"
 
 
-@admin.register(Product)
+@admin.register(Product, site=admin_site)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "image_tag",
         "title",
         "category",
+        "view_count",
         "original_price",
         "discount_percent",
         "final_price",
@@ -106,7 +108,7 @@ class ProductAdmin(admin.ModelAdmin):
         "updated_at",
     )
     list_filter = ("category", "created_at", "updated_at")
-    search_fields = ("title", "description", "meta_title", "meta_description")
+    search_fields = ("title", "meta_title", "meta_description")
     list_select_related = ("category",)
     readonly_fields = ("slug", "main_image_preview", "final_price", "created_at", "updated_at")
 
@@ -166,7 +168,7 @@ class ProductAdmin(admin.ModelAdmin):
     image_tag.short_description = "Image"
 
 
-@admin.register(Slider)
+@admin.register(Slider, site=admin_site)
 class SliderAdmin(admin.ModelAdmin):
     list_display = ("slider_image_preview", "title", "order", "is_active", "created_at")
     list_editable = ("order", "is_active")
@@ -208,8 +210,3 @@ class SliderAdmin(admin.ModelAdmin):
         )
 
     slider_image_preview.short_description = "Slider Preview"
-
-
-admin.site.site_header = "Mega Sewa Global Admin Panel"
-admin.site.site_title = "Mega Sewa Global Admin"
-admin.site.index_title = "Welcome to Mega Sewa Global Dashboard"

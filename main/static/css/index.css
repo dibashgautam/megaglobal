@@ -495,3 +495,121 @@
         border-radius:12px;
     }
 }
+
+
+
+
+
+
+/* popup start */
+.lead-popup-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 16px;
+    backdrop-filter: blur(3px);
+}
+
+.lead-popup-overlay.show{
+    display: flex;
+}
+
+.lead-popup-box{
+    width: 100%;
+    max-width: 460px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    position: relative;
+    z-index: 100000;
+}
+
+.lead-popup-box h3{
+    font-size: 24px;
+    margin: 0 0 8px;
+    font-weight: 700;
+    color: #111;
+}
+
+.lead-popup-box p{
+    margin: 0 0 16px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.form-group{
+    margin-bottom: 14px;
+}
+
+.form-group label{
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+.form-group input{
+    width: 100%;
+    height: 46px;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus{
+    border-color: #c40000;
+    box-shadow: 0 0 0 3px rgba(196,0,0,.10);
+}
+
+.lead-submit-btn{
+    width: 100%;
+    border: none;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg,#c40000,#ff2a2a);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lead-message{
+    margin-top: 12px;
+    font-size: 14px;
+    text-align: center;
+}
+
+body.popup-open{
+    overflow: hidden;
+}
+
+@media (max-width:576px){
+    .lead-popup-box{
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .lead-popup-box h3{
+        font-size: 20px;
+    }
+
+    .form-group input{
+        height: 44px;
+        font-size: 13px;
+    }
+
+    .lead-submit-btn{
+        height: 46px;
+        font-size: 14px;
+    }
+}
+/* popup end */

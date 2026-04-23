@@ -6,38 +6,54 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
-<!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-<!-- <link rel="stylesheet" href="{% static 'images/hero/' %}"> -->
 
-<!-- ================= HERO SLIDER START ================= -->
- <section class="hero-section py-4">
+<div id="leadPopup" class="lead-popup-overlay">
+    <div class="lead-popup-box">
+        <h3>Send Your Requirement</h3>
+        <p>Enter your mobile number, required machine and required raw material.</p>
+
+        <form id="leadForm">
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="text" id="phone" placeholder="Enter mobile number" required>
+            </div>
+
+            <div class="form-group">
+                <label>Machine (optional)</label>
+                <input type="text" id="machine_requirement" placeholder="Machine name">
+            </div>
+
+            <div class="form-group">
+                <label>Raw Material (optional)</label>
+                <input type="text" id="raw_material_requirement" placeholder="Raw material name">
+            </div>
+
+            <button type="submit" class="lead-submit-btn">Submit</button>
+            <p id="leadMessage"></p>
+
+        </form>
+    </div>
+</div>
+
+<section class="hero-section py-4">
     <div class="container-fluid px-lg-5">
-
         <div id="megaSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-
-            <!-- Slides -->
             <div class="carousel-inner rounded-4 shadow overflow-hidden">
-
                 {% for slide in sliders %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-
-                    <!-- Image -->
                     <div class="slider-image-wrapper">
                         <img src="{{ slide.image.url }}" class="slider-img" alt="{{ slide.title }}">
                     </div>
 
-                    <!-- Text Just Below Image -->
                     <div class="slider-text text-center py-4">
                         <h2>{{ slide.title }}</h2>
                         <p>{{ slide.subtitle }}</p>
                     </div>
-
                 </div>
                 {% endfor %}
-
             </div>
 
-            <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#megaSlider" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
@@ -45,29 +61,18 @@
             <button class="carousel-control-next" type="button" data-bs-target="#megaSlider" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
             </button>
-
         </div>
-
     </div>
 </section>
-<!-- ================= HERO SLIDER END ================= -->
 
-
-
-
-
-
-<!-- ================= CATEGORY SECTION START ================= -->
 <section class="category-section py-5">
     <div class="container">
-
         <div class="text-center mb-4">
             <h2 class="fw-bold" style="color: black;"><u>Shop by Category</u></h2>
             <p class="text-muted" style="color: black;">Explore Our Product Categories</p>
         </div>
 
         <div class="row g-4 justify-content-center">
-
             {% for category in categories %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
                 <a href="{% url 'category_detail' category.slug %}" class="text-decoration-none">
@@ -82,49 +87,33 @@
             {% empty %}
                 <p>No categories available.</p>
             {% endfor %}
-
         </div>
     </div>
 </section>
-<!-- ================= CATEGORY SECTION END ================= -->
 
-
-
-
-<!-- ================= PRODUCT SECTION START ================= -->
-<!-- ================= PRODUCT SECTION START ================= -->
 <section class="product-section py-5">
     <div class="container">
-
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            {% if query %}
+                <h2 class="section-title mb-0">
+                    Search Results for "{{ query }}"
+                </h2>
+            {% else %}
+                <h2 class="section-title mb-0">
+                    Featured Products
+                </h2>
 
-            <!-- <div class="product-header"> -->
-
-                {% if query %}
-                    <h2 class="section-title mb-0">
-                        Search Results for "{{ query }}"
-                    </h2>
-                {% else %}
-                    <h2 class="section-title mb-0">
-                        Featured Products
-                    </h2>
-
-                    <a href="{% url 'product_list' %}" class="view-all-btn">
-                        <i class="fa fa-arrow-right"></i>
-                        View All Machines
-                    </a>
-                {% endif %}
-
-            <!-- </div> -->
-
+                <a href="{% url 'product_list' %}" class="view-all-btn">
+                    <i class="fa fa-arrow-right"></i>
+                    View All Machines
+                </a>
+            {% endif %}
         </div>
 
         <div class="row g-4 justify-content-center">
-
             {% for product in products %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
                 <div class="product-card w-100">
-
                     <a href="{% url 'product_detail' product.slug %}" class="image-link">
                         <div class="image-wrapper">
                             <img src="{{ product.image.url }}" alt="{{ product.title }}">
@@ -132,7 +121,6 @@
                     </a>
 
                     <div class="product-info d-flex flex-column">
-
                         <h6 class="product-title">
                             <a href="{% url 'product_detail' product.slug %}" class="text-decoration-none">
                                 {{ product.title }}
@@ -154,7 +142,6 @@
                                 <i class="fa fa-eye me-2"></i> Watch Now
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -166,11 +153,89 @@
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 </section>
-<!-- ================= PRODUCT SECTION END ================= -->
-<!-- ================= PRODUCT SECTION END ================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const popup = document.getElementById("leadPopup");
+    const form = document.getElementById("leadForm");
+    const messageBox = document.getElementById("leadMessage");
+
+    const storageKey = "mega_lead_submitted_at";
+    const submittedAt = localStorage.getItem(storageKey);
+
+    function openPopup() {
+        popup.style.display = "flex";
+    }
+
+    function closePopup() {
+        popup.style.display = "none";
+    }
+
+    // ✅ popup show after 3 sec (test)
+    if (!submittedAt) {
+        setTimeout(function () {
+            openPopup();
+        }, 3000);
+    }
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const phone = document.getElementById("phone").value.trim();
+        const machine = document.getElementById("machine_requirement").value.trim();
+        const raw = document.getElementById("raw_material_requirement").value.trim();
+
+        if (!phone || (!machine && !raw)) {
+            messageBox.textContent = "Phone and at least one requirement required";
+            messageBox.style.color = "red";
+            return;
+        }
+
+        messageBox.textContent = "Submitting...";
+
+        try {
+            const response = await fetch("/save-lead/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    machine_requirement: machine,
+                    raw_material_requirement: raw
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                messageBox.textContent = "Submitted successfully!";
+                messageBox.style.color = "green";
+
+                localStorage.setItem(storageKey, Date.now()); // ✅ important
+
+                form.reset();
+
+                setTimeout(() => {
+                    closePopup();
+                }, 1000);
+            } else {
+                messageBox.textContent = data.message || "Failed";
+                messageBox.style.color = "red";
+            }
+
+        } catch (error) {
+            console.error(error);
+            messageBox.textContent = "Submission failed.";
+            messageBox.style.color = "red";
+        }
+    });
+
+});
+</script>
 
 {% endblock %}

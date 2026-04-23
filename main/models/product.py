@@ -34,6 +34,7 @@ class Product(models.Model):
         max_digits=10,
         decimal_places=2,
         blank=True,
+        null=True,
         editable=False
     )
 
