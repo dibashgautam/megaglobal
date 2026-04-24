@@ -6,6 +6,8 @@
     <title>{% block title %}{{ seo_title|default:"Mega Sewa Global" }}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name="google-site-verification" content="TA-wxnEEgGDLDvMHLz6_4Au3fsoPMyu_5x45Mrkb5M4" />
+
     <meta name="description" content="{% block meta_description %}{{ seo_description|default:'Mega Sewa Global provides machines, industrial products and trusted service in Nepal.' }}{% endblock %}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ canonical_url|default:request.build_absolute_uri }}">
@@ -25,6 +27,7 @@
     {% if product and product.image %}
     <meta name="twitter:image" content="{{ product.image.url }}">
     {% endif %}
+
 
 
     <!-- Favicon -->
