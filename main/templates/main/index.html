@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block title %}Home | Mega Sewa Global{% endblock %}
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
 
 <div id="leadPopup" class="lead-popup-overlay">
     <div class="lead-popup-box">
