@@ -106,9 +106,9 @@
                     <div class="card category-card shadow-sm">
 
                         {% if category.image %}
-                            <img src="{{ category.image.url }}">
+                            <img src="{{ category.image.url }}" loading="lazy">
                         {% else %}
-                            <img src="{% static 'images/default.jpg' %}">
+                            <img src="{% static 'images/default.jpg' %}" loading="lazy">
                         {% endif %}
 
                         <div class="card-content">

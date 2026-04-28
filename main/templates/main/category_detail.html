@@ -539,9 +539,9 @@
 
                 <div class="category-hero-media">
                     {% if category.image %}
-                        <img src="{{ category.image.url }}" alt="{{ category.title }}">
+                        <img src="{{ category.image.url }}" alt="{{ category.title }}" loading="lazy">
                     {% else %}
-                        <img src="{% static 'images/default.jpg' %}" alt="{{ category.title }}">
+                        <img src="{% static 'images/default.jpg' %}" alt="{{ category.title }}" loading="lazy">
                     {% endif %}
                 </div>
 
@@ -604,7 +604,7 @@
 
                     <a href="{% url 'product_detail' product.slug %}">
                         <div class="product-image-wrap">
-                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
                         </div>
                     </a>
 

@@ -901,7 +901,7 @@
         <div id="imageData" style="display:none;">
             <span data-img="{{ product.image.url }}"></span>
             {% for img in product.gallery.all %}
-                <span data-img="{{ img.image.url }}"></span>
+                <span data-img="{{ img.image.url }}" loading="lazy"></span>
             {% endfor %}
         </div>
 
@@ -948,7 +948,7 @@
 
                                 <a href="{% url 'product_detail' item.slug %}">
                                     <div class="image-wrapper">
-                                        <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                                        <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
                                     </div>
                                 </a>
 
